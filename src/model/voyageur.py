@@ -11,7 +11,7 @@ class Experience(object):
     """ représente l'expérience gagné dans une caractéristique ou une
     compétance.
     """
-    def __init__(self, element, xp_tab):
+    def __init__(self, element, xp_tab, taille=None):
         """ initialization
 
         :param element: élément à augmenté (caractéristique ou compétance)
@@ -19,6 +19,18 @@ class Experience(object):
         self._element = element
         self._xp_tab = xp_tab
         self._valeur = 0
+        if taille is not None:
+            self._taille = taille
+            self.__iadd__ = self.iadd_force
+
+    def iadd_force(self, valeur):
+        if self._valeur > self._taille + 4:
+            self._valeur += valeur
+            while (self._valeur >= self._xp_tab[int(self._element)+1] and
+                   self._valeur > self._taille + 4):
+                self._valeur -= self._xp_tab[int(self._element)+1]
+                self._element += 1
+        return self
 
     def __iadd__(self, valeur):
         """ incrémente la valeur
@@ -100,9 +112,25 @@ class Caracteristique(object):
     def exp(self, exp):
         self._exp = exp
 
-    def recalcule(self):
-        pass
 
-    def add_exp(self, exp):
-        self._exp += exp
-        self.recalcule()
+class Caracteristiques(object):
+    """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
+    controller et la vue doivent géré les XP dans les dériver.
+    """
+    def __init__(self):
+        """ initialization
+        """
+        taille = Caracteristique()
+        taille.exp = None
+        force = Caracteristique()
+        self._tab = {"Taille": taille, "Apparence": Caracteristique(),
+                     "Constitution": Caracteristique(),
+                     "Force": force, "Agilité": Caracteristique(),
+                     "Dextérité": Caracteristique(),
+                     "Perception": Caracteristique(), "Vue": Caracteristique(),
+                     "Ouïe": Caracteristique(),
+                     "Odorat-Gout": Caracteristique(),
+                     "Volonté": Caracteristique(),
+                     "Itellect": Caracteristique(),
+                     "Empathie": Caracteristique(), "Rêve": Caracteristique(),
+                     "Chance": Caracteristique()}
