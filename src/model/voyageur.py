@@ -24,7 +24,7 @@ class Experience(object):
         """ incrémente la valeur
         """
         self._valeur += valeur
-        while (valeur <= self._xp_tab[int(self._element)+1]):
+        while (self._valeur >= self._xp_tab[int(self._element)+1]):
             self._valeur -= self._xp_tab[int(self._element)+1]
             self._element += 1
         return self
