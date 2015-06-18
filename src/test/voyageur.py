@@ -23,6 +23,30 @@ class TestCaracteristique(unittest.TestCase):
         c1.exp += 8
         self.assertEqual(int(c1), 13)
         self.assertEqual(int(c1.exp), 0)
+        c1.exp += 19
+        self.assertEqual(int(c1), 15)
+        self.assertEqual(int(c1.exp), 0)
+        c1.exp += 19
+        self.assertEqual(int(c1), 15)
+        self.assertEqual(int(c1.exp), 19)
+        c1.exp += 19
+        self.assertEqual(int(c1), 16)
+        self.assertEqual(int(c1.exp), 18)
+        c1.exp += 32
+        self.assertEqual(int(c1), 17)
+        self.assertEqual(int(c1.exp), 20)
+        c1.exp += 20
+        self.assertEqual(int(c1), 18)
+        self.assertEqual(int(c1.exp), 0)
+        c1.exp += 50
+        self.assertEqual(int(c1), 19)
+        self.assertEqual(int(c1.exp), 0)
+
+    def test_caracteristiques(self):
+        carac = model.voyageur.Caracteristiques()
+        carac["Taille"].valeur = 15
+        carac["Force"].exp += 8
+        self.assertEqual(int(carac["Force"]), 11)
 
 
 if __name__ == '__main__':

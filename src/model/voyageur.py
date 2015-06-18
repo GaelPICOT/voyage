@@ -1,39 +1,27 @@
-''' élément pour la création et la gestion de personnage.
+''' Ã©lÃ©ment pour la crÃ©ation et la gestion de personnage.
 
     :platform: Unix, Windows
-    :synopsis: création et gestion de personnage
+    :synopsis: crÃ©ation et gestion de personnage
 
-.. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
+.. moduleauthor:: GaÃ«l PICOT <gael.picot@free.fr>
 '''
 
 
 class Experience(object):
-    """ représente l'expérience gagné dans une caractéristique ou une
-    compétance.
+    """ reprÃ©sente l'expÃ©rience gagnÃ© dans une caractÃ©ristique ou une
+    compÃ©tance.
     """
-    def __init__(self, element, xp_tab, taille=None):
+    def __init__(self, element, xp_tab):
         """ initialization
 
-        :param element: élément à augmenté (caractéristique ou compétance)
+        :param element: Ã©lÃ©ment Ã  augmentÃ© (caractÃ©ristique ou compÃ©tance)
         """
         self._element = element
         self._xp_tab = xp_tab
         self._valeur = 0
-        if taille is not None:
-            self._taille = taille
-            self.__iadd__ = self.iadd_force
-
-    def iadd_force(self, valeur):
-        if self._valeur > self._taille + 4:
-            self._valeur += valeur
-            while (self._valeur >= self._xp_tab[int(self._element)+1] and
-                   self._valeur > self._taille + 4):
-                self._valeur -= self._xp_tab[int(self._element)+1]
-                self._element += 1
-        return self
 
     def __iadd__(self, valeur):
-        """ incrémente la valeur
+        """ incrÃ©mente la valeur
         """
         self._valeur += valeur
         while (self._valeur >= self._xp_tab[int(self._element)+1]):
@@ -52,12 +40,12 @@ class Experience(object):
 
 
 class XpTab():
-    """ list de valeur pour l'augmentation par l'expérience
+    """ list de valeur pour l'augmentation par l'expÃ©rience
     """
     def __init__(self, base_list, evolution_func):
         """ initialization
 
-        :param base_list: list d'évolution basique
+        :param base_list: list d'Ã©volution basique
         :param evolution_fun: fonction pour le calcul des element exterieur
         """
         self._base_list = base_list
@@ -71,19 +59,19 @@ class XpTab():
 
 
 class Caracteristique(object):
-    """ représente une caracteristique
+    """ reprÃ©sente une caracteristique
     """
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
                 16: 20, 17: 30}
 
-    evolution_func = lambda x: (x - 15) * 10
+    evolution_func = lambda x: (x - 14) * 10
 
     xp_tab = XpTab(base_tab, evolution_func)
 
     def __init__(self, valeur=10):
-        #: valeur de la caractéristique
+        #: valeur de la caractÃ©ristique
         self._valeur = valeur
-        #: expérinece dans la caractéristique
+        #: expÃ©rinece dans la caractÃ©ristique
         self._exp = Experience(self, self.xp_tab)
 
     def __int__(self):
@@ -114,15 +102,32 @@ class Caracteristique(object):
 
 
 class Caracteristiques(object):
-    """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
-    controller et la vue doivent géré les XP dans les dériver.
+    """ classe gÃ©rant l'ensemble des caractÃ©ristiques d'un personnage (*le
+    controller et la vue doivent gÃ©rÃ© les XP dans les dÃ©river.
     """
+    class ExperienceForce(Experience):
+        def __init__(self, element, xp_tab, taille):
+            self._element = element
+            self._xp_tab = xp_tab
+            self._valeur = 0
+            self._taille = taille
+
+        def __iadd__(self, valeur):
+            if self._valeur > self._taille + 4:
+                self._valeur += valeur
+                while (self._valeur >= self._xp_tab[int(self._element)+1] and
+                       self._valeur > self._taille + 4):
+                    self._valeur -= self._xp_tab[int(self._element)+1]
+                    self._element += 1
+            return self
+
     def __init__(self):
         """ initialization
         """
         taille = Caracteristique()
         taille.exp = None
         force = Caracteristique()
+        force.exp = self.ExperienceForce(force, force.xp_tab, int(taille))
         self._tab = {"Taille": taille, "Apparence": Caracteristique(),
                      "Constitution": Caracteristique(),
                      "Force": force, "Agilité": Caracteristique(),
@@ -134,3 +139,6 @@ class Caracteristiques(object):
                      "Itellect": Caracteristique(),
                      "Empathie": Caracteristique(), "Rêve": Caracteristique(),
                      "Chance": Caracteristique()}
+
+    def __getitem__(self, key):
+        return self._tab[key]
