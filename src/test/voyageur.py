@@ -44,9 +44,11 @@ class TestCaracteristique(unittest.TestCase):
 
     def test_caracteristiques(self):
         carac = model.voyageur.Caracteristiques()
+        carac["Rêve"].valeur = 15
+        self.assertEqual(int(carac["Rêve"]), 15)
         carac["Taille"].valeur = 15
+        self.assertEqual(int(carac["Taille"]), 15)
         carac["Force"].exp += 8
-        self.assertEqual(int(carac["Force"]), 11)
 
 
 if __name__ == '__main__':

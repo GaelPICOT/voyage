@@ -62,17 +62,19 @@ class Caracteristique(object):
     """ reprÃ©sente une caracteristique
     """
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
-                16: 20, 17: 30}
+                16: 20}
 
     evolution_func = lambda x: (x - 14) * 10
 
     xp_tab = XpTab(base_tab, evolution_func)
 
-    def __init__(self, valeur=10):
-        #: valeur de la caractÃ©ristique
+    def __init__(self, valeur=10, physique=False):
+        #: valeur de la caractéristique
         self._valeur = valeur
-        #: expÃ©rinece dans la caractÃ©ristique
+        #: expérinece dans la caractéristique
         self._exp = Experience(self, self.xp_tab)
+        #: si la caractéristique et physique (limité à 20)
+        self._physique = physique
 
     def __int__(self):
         return self._valeur
@@ -90,7 +92,11 @@ class Caracteristique(object):
 
     @valeur.setter
     def valeur(self, valeur):
-        self._valeur = valeur
+        if self._physique:
+            if valeur < 20:
+                self._valeur = valeur
+        else:
+            self._valeur = valeur
 
     @property
     def exp(self):
@@ -121,20 +127,25 @@ class Caracteristiques(object):
                     self._element += 1
             return self
 
+        @property
+        def taille(self):
+            return self._taille
+
+        @taille.setter
+        def taille(self, value):
+            self._taille = value
+
     def __init__(self):
         """ initialization
         """
-        taille = Caracteristique()
-        taille.exp = None
-        force = Caracteristique()
-        force.exp = self.ExperienceForce(force, force.xp_tab, int(taille))
-        self._tab = {"Taille": taille, "Apparence": Caracteristique(),
-                     "Constitution": Caracteristique(),
-                     "Force": force, "Agilité": Caracteristique(),
-                     "Dextérité": Caracteristique(),
-                     "Perception": Caracteristique(), "Vue": Caracteristique(),
-                     "Ouïe": Caracteristique(),
-                     "Odorat-Gout": Caracteristique(),
+        self._tab = {"Taille": Caracteristique(True), "Apparence": Caracteristique(),
+                     "Constitution": Caracteristique(True),
+                     "Force": Caracteristique(True), "Agilité": Caracteristique(True),
+                     "Dextérité": Caracteristique(True),
+                     "Perception": Caracteristique(True),
+                     "Vue": Caracteristique(True),
+                     "Ouïe": Caracteristique(True),
+                     "Odorat-Gout": Caracteristique(True),
                      "Volonté": Caracteristique(),
                      "Itellect": Caracteristique(),
                      "Empathie": Caracteristique(), "Rêve": Caracteristique(),
