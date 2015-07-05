@@ -1,27 +1,27 @@
-''' Ã©lÃ©ment pour la crÃ©ation et la gestion de personnage.
+''' élément pour la création et la gestion de personnage.
 
     :platform: Unix, Windows
-    :synopsis: crÃ©ation et gestion de personnage
+    :synopsis: création et gestion de personnage
 
-.. moduleauthor:: GaÃ«l PICOT <gael.picot@free.fr>
+.. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 
 
 class Experience(object):
-    """ reprÃ©sente l'expÃ©rience gagnÃ© dans une caractÃ©ristique ou une
-    compÃ©tance.
+    """ représente l'expÃ©rience gagnÃ© dans une caractéristique ou une
+    compétance.
     """
     def __init__(self, element, xp_tab):
         """ initialization
 
-        :param element: Ã©lÃ©ment Ã  augmentÃ© (caractÃ©ristique ou compÃ©tance)
+        :param element: élément à augmenté (caractéristique ou compétance)
         """
         self._element = element
         self._xp_tab = xp_tab
         self._valeur = 0
 
     def __iadd__(self, valeur):
-        """ incrÃ©mente la valeur
+        """ incrémente la valeur
         """
         self._valeur += valeur
         while (self._valeur >= self._xp_tab[int(self._element)+1]):
@@ -40,12 +40,12 @@ class Experience(object):
 
 
 class XpTab():
-    """ list de valeur pour l'augmentation par l'expÃ©rience
+    """ list de valeur pour l'augmentation par l'expérience
     """
     def __init__(self, base_list, evolution_func):
         """ initialization
 
-        :param base_list: list d'Ã©volution basique
+        :param base_list: list d'évolution basique
         :param evolution_fun: fonction pour le calcul des element exterieur
         """
         self._base_list = base_list
@@ -111,78 +111,44 @@ class Caracteristique(object):
 
 
 class Caracteristiques(object):
-    """ classe gÃ©rant l'ensemble des caractÃ©ristiques d'un personnage (*le
-    controller et la vue doivent gÃ©rÃ© les XP dans les dÃ©river.
+    """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
+    controller et la vue doivent géré les XP dans les dériver.
     """
-    class TailleForce(Caracteristique):
-        class ExperianceForce(Experience):
-            def __init__(self, element, xp_tab):
-                Experience.__init__(self, element, xp_tab)
-                self._taille = 10
-
-            def __iadd__(self, valeur):
-                if int(self._element) > (self._taille + 4):
-                    self._valeur += valeur
-                    while (self._valeur >= self._xp_tab[int(self._element)+1]
-                           and int(self._element) > self._taille + 4):
-                        self._valeur -= self._xp_tab[int(self._element)+1]
-                        self._element += 1
-                return self
-
-            @property
-            def taille(self):
-                return self._taille
-
-            @taille.setter
-            def taille(self, valeur):
-                self._taille = valeur
-
-        class Taille(object):
-            def __init__(self, farce_exp):
-                self._valeur = 10
-                self._farce_exp = farce_exp
-
-            def __int__(self):
-                """ retourn la valeur
-                """
-                return self._valeur
-
-            @property
-            def valeur(self):
-                return self._valeur
-
-            @valeur.setter
-            def valeur(self, valeur):
-                self._valeur = valeur
-                self._farce_exp.taille = valeur
-
-        def __init__(self, valeur=10):
-            self._exp = self.ExperianceForce(self, Caracteristique.xp_tab)
-            Caracteristique.__init__(self, 10, False, self._exp)
-            self._taille = self.Taille(self._exp)
-
-        @property
-        def taille(self):
-            return self._taille
-
     def __init__(self):
         """ initialization
         """
-        force = Caracteristiques.TailleForce()
-        self._tab = {"Taille": force.taille,
+        # force < taill + 4 géré par controleur
+        # taille exp = None géré par controleur
+        self._tab = {"Taille": Caracteristique(10, True),
                      "Apparence": Caracteristique(),
-                     "Constitution": Caracteristique(True),
-                     "Force": force,
-                     "Agilité": Caracteristique(True),
-                     "Dextérité": Caracteristique(True),
-                     "Perception": Caracteristique(True),
-                     "Vue": Caracteristique(True),
-                     "Ouïe": Caracteristique(True),
-                     "Odorat-Gout": Caracteristique(True),
+                     "Constitution": Caracteristique(10, True),
+                     "Force": Caracteristique(10, True),
+                     "Agilité": Caracteristique(10, True),
+                     "Dextérité": Caracteristique(10, True),
+                     "Perception": Caracteristique(10, True),
+                     "Vue": Caracteristique(10, True),
+                     "Ouïe": Caracteristique(10, True),
+                     "Odorat-Gout": Caracteristique(10, True),
                      "Volonté": Caracteristique(),
                      "Itellect": Caracteristique(),
                      "Empathie": Caracteristique(), "Rêve": Caracteristique(),
                      "Chance": Caracteristique()}
 
     def __getitem__(self, key):
-        return self._tab[key]
+        if key == "Mêlée":
+            return (int(self["Force"]) + int(self["Agilité"])) // 2
+        elif key == "Tir":
+            return (int(self["Vue"]) + int(self["Dextérité"])) // 2
+        elif key == "Lancer":
+            return (int(self["Tir"]) + int(self["Force"])) // 2
+        elif key == "Dérobée":
+            return (int(self["Agilité"]) + (21 - int(self["Taille"]))) // 2
+        else:
+            return self._tab[key]
+
+
+class Personnage(object):
+    """ objet permétant de créé un personnage.
+    """
+    def __init__(self):
+        self._caractéristiques = Caracteristiques()

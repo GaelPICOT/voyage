@@ -49,13 +49,14 @@ class TestCaracteristique(unittest.TestCase):
         carac["Taille"].valeur = 15
         self.assertEqual(int(carac["Taille"]), 15)
         carac["Force"].exp += 10
-        self.assertEqual(int(carac["Force"].exp), 2)
+        self.assertEqual(int(carac["Force"]), 11)
         carac["Taille"].valeur = 6
         self.assertEqual(int(carac["Taille"]), 6)
         carac["Taille"].valeur = 15
         self.assertEqual(int(carac["Taille"]), 15)
         carac["Force"].exp += 10
-        self.assertEqual(int(carac["Force"].exp), 10)
+        self.assertEqual(int(carac["Force"].exp), 4)
+        self.assertEqual(int(carac["Force"]), 12)
 
 
 if __name__ == '__main__':
