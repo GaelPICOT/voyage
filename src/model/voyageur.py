@@ -68,7 +68,7 @@ class Caracteristique(object):
 
     xp_tab = XpTab(base_tab, evolution_func)
 
-    def __init__(self, valeur=10, physique=False, experience=None):
+    def __init__(self, valeur=10, max_=None, experience=None):
         #: valeur de la caractéristique
         self._valeur = valeur
         #: expérinece dans la caractéristique
@@ -77,7 +77,7 @@ class Caracteristique(object):
         else:
             self._exp = experience
         #: si la caractéristique et physique (limité à 20)
-        self._physique = physique
+        self._max = max_
 
     def __int__(self):
         return self._valeur
@@ -95,11 +95,19 @@ class Caracteristique(object):
 
     @valeur.setter
     def valeur(self, valeur):
-        if self._physique:
-            if valeur < 20:
+        if self._max is not None:
+            if valeur <= self._max:
                 self._valeur = valeur
         else:
             self._valeur = valeur
+
+    @property
+    def max(self):
+        return self._max
+
+    @max.setter
+    def max(self, value):
+        self._max = value
 
     @property
     def exp(self):
@@ -119,16 +127,16 @@ class Caracteristiques(object):
         """
         # force < taill + 4 géré par controleur
         # taille exp = None géré par controleur
-        self._tab = {"Taille": Caracteristique(10, True),
+        self._tab = {"Taille": Caracteristique(10, 15),
                      "Apparence": Caracteristique(),
-                     "Constitution": Caracteristique(10, True),
-                     "Force": Caracteristique(10, True),
-                     "Agilité": Caracteristique(10, True),
-                     "Dextérité": Caracteristique(10, True),
-                     "Perception": Caracteristique(10, True),
-                     "Vue": Caracteristique(10, True),
-                     "Ouïe": Caracteristique(10, True),
-                     "Odorat-Gout": Caracteristique(10, True),
+                     "Constitution": Caracteristique(10, 20),
+                     "Force": Caracteristique(10, 14),
+                     "Agilité": Caracteristique(10, 20),
+                     "Dextérité": Caracteristique(10, 20),
+                     "Perception": Caracteristique(10, 20),
+                     "Vue": Caracteristique(10, 20),
+                     "Ouïe": Caracteristique(10, 20),
+                     "Odorat-Gout": Caracteristique(10, 20),
                      "Volonté": Caracteristique(),
                      "Itellect": Caracteristique(),
                      "Empathie": Caracteristique(), "Rêve": Caracteristique(),
@@ -145,6 +153,19 @@ class Caracteristiques(object):
             return (int(self["Agilité"]) + (21 - int(self["Taille"]))) // 2
         else:
             return self._tab[key]
+
+
+class Competance(object):
+    base_tab = {-10: 5, -9: 5, -8: 5, -7: 10, -6: 10, -5: 10, -4: 10, -3: 15,
+                -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
+                6: 30, 7: 40, 8: 40, 9: 60, 10: 60}
+
+    evolution_func = lambda x: 100
+
+    xp_tab = XpTab(base_tab, evolution_func)
+
+    def __init__(self, valeur=0):
+        self._valeur = valeur
 
 
 class Personnage(object):
