@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ''' élément pour la création et la gestion de personnage.
 
     :platform: Unix, Windows
@@ -8,7 +10,7 @@
 
 
 class Experience(object):
-    """ représente l'expÃ©rience gagnÃ© dans une caractéristique ou une
+    """ représente l'expérience gagné dans une caractéristique ou une
     compétance.
     """
     def __init__(self, element, xp_tab):
@@ -64,11 +66,12 @@ class Caracteristique(object):
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
                 16: 20}
 
-    evolution_func = lambda x: (x - 14) * 10
+    xp_tab = XpTab(base_tab, lambda x: (x - 14) * 10)
 
-    xp_tab = XpTab(base_tab, evolution_func)
-
-    def __init__(self, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur=10, max_=None, experience=None):
+        """ initialization
+        """
+        self._name = name
         #: valeur de la caractéristique
         self._valeur = valeur
         #: expérinece dans la caractéristique
@@ -127,20 +130,21 @@ class Caracteristiques(object):
         """
         # force < taill + 4 géré par controleur
         # taille exp = None géré par controleur
-        self._tab = {"Taille": Caracteristique(10, 15),
-                     "Apparence": Caracteristique(),
-                     "Constitution": Caracteristique(10, 20),
-                     "Force": Caracteristique(10, 14),
-                     "Agilité": Caracteristique(10, 20),
-                     "Dextérité": Caracteristique(10, 20),
-                     "Perception": Caracteristique(10, 20),
-                     "Vue": Caracteristique(10, 20),
-                     "Ouïe": Caracteristique(10, 20),
-                     "Odorat-Gout": Caracteristique(10, 20),
-                     "Volonté": Caracteristique(),
-                     "Itellect": Caracteristique(),
-                     "Empathie": Caracteristique(), "Rêve": Caracteristique(),
-                     "Chance": Caracteristique()}
+        self._tab = {"Taille": Caracteristique("Taille", 10, 15),
+                     "Apparence": Caracteristique("Apparence"),
+                     "Constitution": Caracteristique("Constitution", 10, 20),
+                     "Force": Caracteristique("Force", 10, 14),
+                     "Agilité": Caracteristique("Agilité", 10, 20),
+                     "Dextérité": Caracteristique("Dextérité", 10, 20),
+                     "Perception": Caracteristique("Perception", 10, 20),
+                     "Vue": Caracteristique("Vue", 10, 20),
+                     "Ouïe": Caracteristique("Ouïe", 10, 20),
+                     "Odorat-Gout": Caracteristique("Odorat-Gout", 10, 20),
+                     "Volonté": Caracteristique("Volonté"),
+                     "Itellect": Caracteristique("Itellect"),
+                     "Empathie": Caracteristique("Empathie"),
+                     "Rêve": Caracteristique("Rêve"),
+                     "Chance": Caracteristique("Chance")}
 
     def __getitem__(self, key):
         if key == "Mêlée":
@@ -160,11 +164,10 @@ class Competance(object):
                 -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
                 6: 30, 7: 40, 8: 40, 9: 60, 10: 60}
 
-    evolution_func = lambda x: 100
+    xp_tab = XpTab(base_tab, lambda x: 100)
 
-    xp_tab = XpTab(base_tab, evolution_func)
-
-    def __init__(self, valeur=0):
+    def __init__(self, name, valeur=0):
+        self._name = name
         self._valeur = valeur
 
 

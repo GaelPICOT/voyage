@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ''' module de test pour la gestion de personnage
 
     :platform: Unix, Windows

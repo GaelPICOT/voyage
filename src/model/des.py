@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ''' gestiobn des dés virtuel.
 
     :platform: Unix, Windows
