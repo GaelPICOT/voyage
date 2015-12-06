@@ -14,7 +14,7 @@ import model.voyageur
 class TestCaracteristique(unittest.TestCase):
 
     def test_caracteristique_evolution(self):
-        c1 = model.voyageur.Caracteristique()
+        c1 = model.voyageur.Caracteristique("test")
         self.assertEqual(int(c1), 10)
         c1.exp += 8
         self.assertEqual(int(c1), 11)

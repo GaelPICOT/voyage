@@ -7,6 +7,7 @@
 
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
+from PyQt5.QtCore import QObject, pyqtSignal
 
 
 class Experience(object):
@@ -41,7 +42,7 @@ class Experience(object):
         self._valeur
 
 
-class XpTab():
+class XpTab(object):
     """ list de valeur pour l'augmentation par l'expérience
     """
     def __init__(self, base_list, evolution_func):
@@ -60,9 +61,12 @@ class XpTab():
             return self._evolution_func(key)
 
 
-class Caracteristique(object):
+class Caracteristique(QObject):
     """ représente une caracteristique
     """
+
+    value_changed = pyqtSignal(str)
+
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
                 16: 20}
 
@@ -71,6 +75,8 @@ class Caracteristique(object):
     def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialization
         """
+        QObject.__init__(self)
+        #: nom caracteristique
         self._name = name
         #: valeur de la caractéristique
         self._valeur = valeur
@@ -87,6 +93,7 @@ class Caracteristique(object):
 
     def __iadd__(self, valeur):
         self._valeur += valeur
+        self.value_changed.emit(self._name)
         return self
 
     def __add__(self, valeur):
@@ -103,6 +110,7 @@ class Caracteristique(object):
                 self._valeur = valeur
         else:
             self._valeur = valeur
+        self.value_changed.emit(self._name)
 
     @property
     def max(self):
@@ -110,6 +118,8 @@ class Caracteristique(object):
 
     @max.setter
     def max(self, value):
+        if self.valeur > value:
+            self.valeur = value
         self._max = value
 
     @property
@@ -121,7 +131,7 @@ class Caracteristique(object):
         self._exp = exp
 
 
-class Caracteristiques(object):
+class Caracteristiques(QObject):
     """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
     controller et la vue doivent géré les XP dans les dériver.
     """
@@ -145,6 +155,13 @@ class Caracteristiques(object):
                      "Empathie": Caracteristique("Empathie"),
                      "Rêve": Caracteristique("Rêve"),
                      "Chance": Caracteristique("Chance")}
+        self._tab["Taille"].value_changed.connect(self.caracteristique_changed)
+
+    def caracteristique_changed(self, name):
+        """ slot pour changement de caractéristique.
+        """
+        if name == "Taille":
+            self._tab["force"].max = self._tab["Taille"] + 4
 
     def __getitem__(self, key):
         if key == "Mêlée":
@@ -159,7 +176,7 @@ class Caracteristiques(object):
             return self._tab[key]
 
 
-class Competance(object):
+class Competance(QObject):
     base_tab = {-10: 5, -9: 5, -8: 5, -7: 10, -6: 10, -5: 10, -4: 10, -3: 15,
                 -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
                 6: 30, 7: 40, 8: 40, 9: 60, 10: 60}
@@ -171,7 +188,7 @@ class Competance(object):
         self._valeur = valeur
 
 
-class Personnage(object):
+class Personnage(QObject):
     """ objet permétant de créé un personnage.
     """
     def __init__(self):
