@@ -8,6 +8,7 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 from PyQt5.QtCore import QObject, pyqtSignal
+import dice
 
 
 class Experience(object):
@@ -193,3 +194,7 @@ class Personnage(QObject):
     """
     def __init__(self):
         self._caractéristiques = Caracteristiques()
+        if dice.roll("d12").pop() == 1:
+            self._main = "ambidextre"
+        else:
+            self._main = "droite"
