@@ -8,13 +8,13 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import unittest
-import model.voyageur
+import model.competance
 
 
 class TestCaracteristique(unittest.TestCase):
 
     def test_caracteristique_evolution(self):
-        c1 = model.voyageur.Caracteristique("test")
+        c1 = model.competance.Caracteristique("test")
         self.assertEqual(int(c1), 10)
         c1.exp += 8
         self.assertEqual(int(c1), 11)
@@ -45,7 +45,7 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(c1.exp), 0)
 
     def test_caracteristiques(self):
-        carac = model.voyageur.Caracteristiques()
+        carac = model.competance.Caracteristiques()
         carac["Rêve"].valeur = 15
         self.assertEqual(int(carac["Rêve"]), 15)
         carac["Taille"].valeur = 15
