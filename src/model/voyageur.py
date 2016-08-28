@@ -7,8 +7,7 @@
 
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
-from PyQt5.QtCore import QObject, pyqtSignal
-import dice
+import dice, model.observer as obs
 
 
 class Experience(object):
@@ -62,11 +61,11 @@ class XpTab(object):
             return self._evolution_func(key)
 
 
-class Caracteristique(QObject):
+class Caracteristique(object):
     """ représente une caracteristique
     """
 
-    value_changed = pyqtSignal(str)
+    value_changed = obs.Observable()
 
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
                 16: 20}
@@ -76,7 +75,6 @@ class Caracteristique(QObject):
     def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialization
         """
-        QObject.__init__(self)
         #: nom caracteristique
         self._name = name
         #: valeur de la caractéristique
@@ -132,7 +130,7 @@ class Caracteristique(QObject):
         self._exp = exp
 
 
-class Caracteristiques(QObject):
+class Caracteristiques(object):
     """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
     controller et la vue doivent géré les XP dans les dériver.
     """
@@ -162,7 +160,7 @@ class Caracteristiques(QObject):
         """ slot pour changement de caractéristique.
         """
         if name == "Taille":
-            self._tab["force"].max = self._tab["Taille"] + 4
+            self._tab["Force"].max = self._tab["Taille"] + 4
 
     def __getitem__(self, key):
         if key == "Mêlée":
@@ -177,7 +175,7 @@ class Caracteristiques(QObject):
             return self._tab[key]
 
 
-class Competance(QObject):
+class Competance(object):
     base_tab = {-10: 5, -9: 5, -8: 5, -7: 10, -6: 10, -5: 10, -4: 10, -3: 15,
                 -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
                 6: 30, 7: 40, 8: 40, 9: 60, 10: 60}
@@ -189,7 +187,7 @@ class Competance(QObject):
         self._valeur = valeur
 
 
-class Personnage(QObject):
+class Personnage(object):
     """ objet permétant de créé un personnage.
     """
     def __init__(self):
