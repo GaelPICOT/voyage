@@ -7,7 +7,6 @@
 
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
-import dice
 import model.observer as obs
 
 
@@ -62,30 +61,23 @@ class XpTab(object):
             return self._evolution_func(key)
 
 
-class Caracteristique(object):
-    """ représente une caracteristique
+class OptionEvolutive(object):
+    """ représente tout option pouvant évoluer avec l'expertience
     """
-
-    value_changed = obs.Observable()
-
-    base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
-                16: 20}
-
-    xp_tab = XpTab(base_tab, lambda x: (x - 14) * 10)
 
     def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialization
         """
-        #: nom caracteristique
+        #: nom de l'option
         self._name = name
-        #: valeur de la caractéristique
+        #: valeur de la option
         self._valeur = valeur
-        #: expérinece dans la caractéristique
+        #: expérinece dans la option
         if experience is None:
-            self._exp = Experience(self, Caracteristique.xp_tab)
+            self._exp = Experience(self, self.xp_tab)
         else:
             self._exp = experience
-        #: si la caractéristique et physique (limité à 20)
+        #: si l'option à une limite
         self._max = max_
 
     def __int__(self):
@@ -131,10 +123,28 @@ class Caracteristique(object):
         self._exp = exp
 
 
+class Caracteristique(OptionEvolutive):
+    """ représente une caracteristique
+    """
+
+    value_changed = obs.Observable()
+
+    base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
+                16: 20}
+
+    xp_tab = XpTab(base_tab, lambda x: (x - 14) * 10)
+
+    def __init__(self, name, valeur=10, max_=None, experience=None):
+        """ initialization
+        """
+        OptionEvolutive.__init__(self, name, valeur, max_, experience)
+
+
 class Caracteristiques(object):
     """ classe gérant l'ensemble des caractéristiques d'un personnage (*le
     controller et la vue doivent géré les XP dans les dériver.
     """
+
     def __init__(self):
         """ initialization
         """
@@ -177,12 +187,16 @@ class Caracteristiques(object):
 
 
 class Competance(object):
+
+    value_changed = obs.Observable()
+
     base_tab = {-10: 5, -9: 5, -8: 5, -7: 10, -6: 10, -5: 10, -4: 10, -3: 15,
                 -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
                 6: 30, 7: 40, 8: 40, 9: 60, 10: 60}
 
     xp_tab = XpTab(base_tab, lambda x: 100)
 
-    def __init__(self, name, valeur=0):
-        self._name = name
-        self._valeur = valeur
+    def __init__(self, name, valeur=10, max_=None, experience=None):
+        """ initialisation
+        """
+        OptionEvolutive.__init__(self, name, valeur, max_, experience)
