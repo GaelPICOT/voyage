@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/model/actions.py=utf-8
+encoding//src/model/archetype.py=utf-8
 encoding//src/model/combat.py=utf-8
 encoding//src/model/competance.py=utf-8
 encoding//src/model/hautreve.py=utf-8

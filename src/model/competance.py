@@ -65,9 +65,10 @@ class OptionEvolutive(object):
     """ représente tout option pouvant évoluer avec l'expertience
     """
 
-    def __init__(self, name, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur=10, max_=None, experience=0):
         """ initialization
         """
+        self.value_changed = obs.Observable()
         #: nom de l'option
         self._name = name
         #: valeur de la option
@@ -127,14 +128,12 @@ class Caracteristique(OptionEvolutive):
     """ représente une caracteristique
     """
 
-    value_changed = obs.Observable()
-
     base_tab = {7: 6, 8: 6, 9: 7, 10: 7, 11: 8, 12: 8, 13: 9, 14: 9, 15: 10,
                 16: 20}
 
     xp_tab = XpTab(base_tab, lambda x: (x - 14) * 10)
 
-    def __init__(self, name, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur=10, max_=None, experience=0):
         """ initialization
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
@@ -186,9 +185,7 @@ class Caracteristiques(object):
             return self._tab[key]
 
 
-class Competance(object):
-
-    value_changed = obs.Observable()
+class Competance(OptionEvolutive):
 
     base_tab = {-10: 5, -9: 5, -8: 5, -7: 10, -6: 10, -5: 10, -4: 10, -3: 15,
                 -2: 15, -1: 15, 0: 15, 1: 20, 2: 20, 3: 20, 4: 20, 5: 30,
@@ -196,7 +193,34 @@ class Competance(object):
 
     xp_tab = XpTab(base_tab, lambda x: 100)
 
-    def __init__(self, name, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur=10, max_=None, experience=0):
         """ initialisation
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
+
+
+class CompetanceTron(Competance):
+    """ représente une compétance liée à une, ou plus, autre.
+    """
+
+    def __init__(self, name, competance_lier, limite_lien):
+        """ initialisation
+        """
+        self._limite_lien = limite_lien
+        self._competance_lier = competance_lier
+        Competance.__init__(self, name, competance_lier.valeur,
+                            competance_lier.max, 0)
+        self.value_changed.connect(self.self_modifier)
+        self._competance_lier.value_changed.connect(self.lien_modifier)
+
+    def lien_modifier(self):
+        """
+        """
+        if self._competance_lier.valeur <= self._limite_lien:
+            self._valeur = self._competance_lier.valeur
+
+    def self_modifier(self):
+        """
+        """
+        if self.valeur <= self._limite_lien:
+            self._competance_lier.valeur = self.valeur
