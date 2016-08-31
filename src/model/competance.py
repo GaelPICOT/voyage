@@ -65,7 +65,7 @@ class OptionEvolutive(object):
     """ représente tout option pouvant évoluer avec l'expertience
     """
 
-    def __init__(self, name, valeur=10, max_=None, experience=0):
+    def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialization
         """
         self.value_changed = obs.Observable()
@@ -133,7 +133,7 @@ class Caracteristique(OptionEvolutive):
 
     xp_tab = XpTab(base_tab, lambda x: (x - 14) * 10)
 
-    def __init__(self, name, valeur=10, max_=None, experience=0):
+    def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialization
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
@@ -193,7 +193,7 @@ class Competance(OptionEvolutive):
 
     xp_tab = XpTab(base_tab, lambda x: 100)
 
-    def __init__(self, name, valeur=10, max_=None, experience=0):
+    def __init__(self, name, valeur=10, max_=None, experience=None):
         """ initialisation
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
@@ -209,7 +209,7 @@ class CompetanceTron(Competance):
         self._limite_lien = limite_lien
         self._competance_lier = competance_lier
         Competance.__init__(self, name, competance_lier.valeur,
-                            competance_lier.max, 0)
+                            competance_lier.max, None)
         self.value_changed.connect(self.self_modifier)
         self._competance_lier.value_changed.connect(self.lien_modifier)
 
