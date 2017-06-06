@@ -193,7 +193,7 @@ class Competance(OptionEvolutive):
 
     xp_tab = XpTab(base_tab, lambda x: 100)
 
-    def __init__(self, name, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur=0, max_=None, experience=None):
         """ initialisation
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
@@ -203,7 +203,7 @@ class CompetanceTron(Competance):
     """ représente une compétance liée à une, ou plus, autre.
     """
 
-    def __init__(self, name, competance_lier, limite_lien):
+    def __init__(self, name, competance_lier, limite_lien=0):
         """ initialisation
         """
         self._limite_lien = limite_lien
@@ -213,13 +213,13 @@ class CompetanceTron(Competance):
         self.value_changed.connect(self.self_modifier)
         self._competance_lier.value_changed.connect(self.lien_modifier)
 
-    def lien_modifier(self):
+    def lien_modifier(self, _):
         """
         """
         if self._competance_lier.valeur <= self._limite_lien:
             self._valeur = self._competance_lier.valeur
 
-    def self_modifier(self):
+    def self_modifier(self, _):
         """
         """
         if self.valeur <= self._limite_lien:
@@ -287,3 +287,46 @@ class Competances():
                                  CompetanceLimitee(srv + "Sous-sols", srv_ext),
                                  "Travestissement":
                                  Competance("Travestissement", -8)}
+        self._c_specialse = {"Acrobatie": Competance("Acrobatie", -11),
+                             "Chirurgie": Competance("Chirurgie", -11),
+                             "Jeu": Competance("Jeu", -11),
+                             "Jonglerie": Competance("Jonglerie", -11),
+                             "Maroquinerie": Competance("Maroquinerie", -11),
+                             "Métallurgie": Competance("Métallurgie", -11),
+                             "Natation": Competance("Natation", -11),
+                             "Navigation": Competance("Navigation", -11),
+                             "Orfèvrerie": Competance("Orfèvrerie", -11),
+                             "Serrurerie": Competance("Serrurerie", -11)}
+        self._connaissances = {"Alchimie": Competance("Alchimie", -11),
+                               "Astrologie": Competance("Astrologie", -11),
+                               "Botanique": Competance("Botanique", -11),
+                               "Écriture": Competance("Écriture", -11),
+                               "Légendes": Competance("Légendes", -11),
+                               "Médecine": Competance("Médecine", -11),
+                               "Zoologie": Competance("Zoologie", -11)}
+        self._draconic = {"Oniros": Competance("Oniros", -11),
+                          "Hypnos": Competance("Hypnos", -11),
+                          "Narcos": Competance("Narcos", -11),
+                          "Thanatos": Competance("Thanatos", -11)}
+        epee = Competance("Epée 1 main", -6)
+        dague = Competance("Dague de mélée", -6)
+        hache = Competance("Hache 1 main", -6)
+        masse = Competance("Masse 1 main", -6)
+        self._c_combat = {"Armes d’hast": Competance("Armes d’hast", -6),
+                          "Bouclier": Competance("Bouclier", -6),
+                          "Dague de mélée": dague,
+                          "Corp à corp": CompetanceTron("Corp à corp", dague),
+                          "Esquive": CompetanceTron("Esquive", dague),
+                          "Epée 1 main": epee,
+                          "Epée 2 main": CompetanceTron("Epée 2 main", epee),
+                          "Hache 1 main": hache,
+                          "Hache 2 main": CompetanceTron("Hache 2 main", hache),
+                          "Lance": Competance("Lance", -6),
+                          "Masse 1 main": masse,
+                          "Masse 2 main": CompetanceTron("Masse 2 main", masse)}
+        self._c_tir_lance = {"Arbalète": Competance("Arbalète", -8),
+                             "Arc": Competance("Arc", -8),
+                             "Fronde": Competance("Fronde", -8),
+                             "Hache de lancer": Competance("Hache de lancer", -8),
+                             "Fouet": Competance("Fouet", -8),
+                             "Dague de jets": Competance("Dague de jets", -8)}

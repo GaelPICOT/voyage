@@ -61,6 +61,16 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(carac["Force"].exp), 4)
         self.assertEqual(int(carac["Force"]), 11)
 
+    def test_cmp_tron(self):
+        cmp1 = model.competance.Competance("t1", -6)
+        cmp2 = model.competance.CompetanceTron("t2", cmp1)
+        cmp3 = model.competance.CompetanceTron("t2", cmp2)
+        cmp3 += 1
+        self.assertEqual(int(cmp1.valeur), -5)
+        self.assertEqual(int(cmp2.valeur), -5)
+        self.assertEqual(int(cmp3.valeur), -5)
+        
+
     def test_voyageur(self):
         voy = model.voyageur.Personnage()
         voy.caracteristiques["Rêve"].valeur = 15
