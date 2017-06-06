@@ -89,6 +89,11 @@ class TestCaracteristique(unittest.TestCase):
         voy.competances["Epée 1 main"] += 7
         self.assertEqual(int(voy.competances["Epée 1 main"]), 1)
         self.assertEqual(int(voy.competances["Epée 2 main"]), 0)
+        voy.competances["Survie en Forêt"] += 1
+        self.assertEqual(int(voy.competances["Survie en Forêt"]), -8)
+        voy.competances["Survie en Extérieur"] += 1
+        voy.competances["Survie en Forêt"] += 1
+        self.assertEqual(int(voy.competances["Survie en Forêt"]), -7)
 
 
 if __name__ == '__main__':

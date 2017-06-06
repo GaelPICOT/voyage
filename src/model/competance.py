@@ -243,13 +243,13 @@ class CompetanceLimitee(Competance):
         Competance.__init__(self, name, valeur, max_, None)
         self.value_changed.connect(self.self_modifier)
 
-    def self_modifier(self):
+    def self_modifier(self, _):
         """
         """
-        if self.valeur >= self._limite_lien:
+        if self._valeur >= self._limite_lien:
             self.value_changed.observer = []
-        if self.valeur >= self._competance_limitante.valeur:
-            self.valeur = self._competance_limitante.valeur
+        if self._valeur >= self._competance_limitante.valeur:
+            self._valeur = self._competance_limitante.valeur
 
 
 class Competances():
