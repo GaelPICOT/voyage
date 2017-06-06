@@ -218,12 +218,17 @@ class CompetanceTron(Competance):
         """
         if self._competance_lier.valeur <= self._limite_lien:
             self._valeur = self._competance_lier.valeur
+        elif self.valeur < self._limite_lien:
+            self._valeur = self._limite_lien
 
     def self_modifier(self, _):
         """
         """
-        if self.valeur <= self._limite_lien:
+        if (self.valeur <= self._limite_lien and
+                self._competance_lier.valeur < self.valeur):
             self._competance_lier.valeur = self.valeur
+        elif self._competance_lier.valeur < self.valeur:
+            self._competance_lier.valeur = self._limite_lien
 
 
 class CompetanceLimitee(Competance):
@@ -320,13 +325,29 @@ class Competances():
                           "Epée 1 main": epee,
                           "Epée 2 main": CompetanceTron("Epée 2 main", epee),
                           "Hache 1 main": hache,
-                          "Hache 2 main": CompetanceTron("Hache 2 main", hache),
+                          "Hache 2 main": CompetanceTron("Hache 2 main",
+                                                         hache),
                           "Lance": Competance("Lance", -6),
                           "Masse 1 main": masse,
-                          "Masse 2 main": CompetanceTron("Masse 2 main", masse)}
+                          "Masse 2 main": CompetanceTron("Masse 2 main", masse)
+                          }
         self._c_tir_lance = {"Arbalète": Competance("Arbalète", -8),
                              "Arc": Competance("Arc", -8),
                              "Fronde": Competance("Fronde", -8),
-                             "Hache de lancer": Competance("Hache de lancer", -8),
+                             "Hache de lancer": Competance("Hache de lancer",
+                                                           -8),
                              "Fouet": Competance("Fouet", -8),
                              "Dague de jets": Competance("Dague de jets", -8)}
+        self._all = {**self._c_generales, **self._c_particulieres,
+                     **self._c_specialse, **self._connaissances,
+                     **self._draconic, **self._c_combat, **self._c_tir_lance}
+
+    def __getitem__(self, key):
+        """ get a competence by name
+        """
+        return self._all[key]
+
+    def __setitem__(self, key, value):
+        """ get a competence by name
+        """
+        self._all[key] = value

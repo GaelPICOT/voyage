@@ -8,7 +8,7 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import dice
-from model.competance import Caracteristiques
+from model.competance import Caracteristiques, Competances
 
 
 class Personnage(object):
@@ -16,6 +16,7 @@ class Personnage(object):
     """
     def __init__(self):
         self._caracteristiques = Caracteristiques()
+        self._competances = Competances()
         if dice.roll("d12").pop() == 1:
             self._mainhand = "ambidextre"
         else:
@@ -32,3 +33,9 @@ class Personnage(object):
         """ property pour accédé aux caracteristiques
         """
         return self._caracteristiques
+
+    @property
+    def competances(self):
+        """
+        """
+        return self._competances

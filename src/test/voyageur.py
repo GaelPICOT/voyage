@@ -69,12 +69,26 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(cmp1.valeur), -5)
         self.assertEqual(int(cmp2.valeur), -5)
         self.assertEqual(int(cmp3.valeur), -5)
-        
 
     def test_voyageur(self):
         voy = model.voyageur.Personnage()
         voy.caracteristiques["Rêve"].valeur = 15
         self.assertEqual(int(voy.caracteristiques["Rêve"]), 15)
+        self.assertEqual(int(voy.competances["Bricollage"]), -4)
+        voy.competances["Bricollage"] += 1
+        self.assertEqual(int(voy.competances["Bricollage"]), -3)
+        voy.competances["Hache 1 main"] += 1
+        self.assertEqual(int(voy.competances["Hache 2 main"]), -5)
+        self.assertEqual(int(voy.competances["Hache 1 main"]), -5)
+        voy.competances["Hache 1 main"] += 5
+        self.assertEqual(int(voy.competances["Hache 2 main"]), 0)
+        self.assertEqual(int(voy.competances["Hache 1 main"]), 0)
+        voy.competances["Hache 1 main"] += 1
+        self.assertEqual(int(voy.competances["Hache 2 main"]), 0)
+        self.assertEqual(int(voy.competances["Hache 1 main"]), 1)
+        voy.competances["Epée 1 main"] += 7
+        self.assertEqual(int(voy.competances["Epée 1 main"]), 1)
+        self.assertEqual(int(voy.competances["Epée 2 main"]), 0)
 
 
 if __name__ == '__main__':
