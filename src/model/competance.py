@@ -351,3 +351,31 @@ class Competances():
         """ get a competence by name
         """
         self._all[key] = value
+
+    @property
+    def c_generales(self):
+        return self._c_generales
+
+    @property
+    def c_particulieres(self):
+        return self._c_particulieres
+
+    @property
+    def c_specialse(self):
+        return self._c_specialse
+
+    @property
+    def connaissances(self):
+        return self._connaissances
+
+    @property
+    def draconic(self):
+        return self._draconic
+
+    @property
+    def c_combat(self):
+        return self._c_combat
+
+    @property
+    def c_tir_lance(self):
+        return self._c_tir_lance
