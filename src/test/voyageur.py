@@ -9,6 +9,7 @@
 '''
 import unittest
 import model.competance
+import model.voyageur
 
 
 class TestCaracteristique(unittest.TestCase):
@@ -59,6 +60,11 @@ class TestCaracteristique(unittest.TestCase):
         carac["Force"].exp += 10
         self.assertEqual(int(carac["Force"].exp), 4)
         self.assertEqual(int(carac["Force"]), 11)
+
+    def test_voyageur(self):
+        voy = model.voyageur.Personnage()
+        voy.caracteristiques["Rêve"].valeur = 15
+        self.assertEqual(int(voy.caracteristiques["Rêve"]), 15)
 
 
 if __name__ == '__main__':

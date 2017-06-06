@@ -224,3 +224,66 @@ class CompetanceTron(Competance):
         """
         if self.valeur <= self._limite_lien:
             self._competance_lier.valeur = self.valeur
+
+
+class CompetanceLimitee(Competance):
+    """ représente une compétance limité par une autre.
+    """
+    def __init__(self, name, competance_limitante, valeur=-8, max_=None,
+                 limite_lien=0):
+        """ initialisation
+        """
+        self._limite_lien = limite_lien
+        self._competance_limitante = competance_limitante
+        Competance.__init__(self, name, valeur, max_, None)
+        self.value_changed.connect(self.self_modifier)
+
+    def self_modifier(self):
+        """
+        """
+        if self.valeur >= self._limite_lien:
+            self.value_changed.observer = []
+        if self.valeur >= self._competance_limitante.valeur:
+            self.valeur = self._competance_limitante.valeur
+
+
+class Competances():
+    def __init__(self):
+        """ initialisation
+        """
+        self._c_generales = {"Bricollage": Competance("Bricollage", -4),
+                             "Chant": Competance("Chant", -4),
+                             "Course": Competance("Course", -4),
+                             "Cuisine": Competance("Cuisine", -4),
+                             "Danse": Competance("Danse", -4),
+                             "Dessin": Competance("Dessin", -4),
+                             "Discretion": Competance("Discretion", -4),
+                             "Escalade": Competance("Escalade", -4),
+                             "Saut": Competance("Saut", -4),
+                             "Séduction": Competance("Séduction", -4),
+                             "Vigilance": Competance("Vigilance", -4)}
+        srv = "Survie en "
+        srv_ext = Competance(srv + "Extérieur", -8)
+        self._c_particulieres = {"Charpenterie": Competance("Charpenterie",
+                                                            -8),
+                                 "Comédie": Competance("Comédie", -8),
+                                 "Commerce": Competance("Commerce", -8),
+                                 "Equitation": Competance("Equitation", -8),
+                                 "Maçonnerie": Competance("Maçonnerie", -8),
+                                 "Pickpocket": Competance("Pickpocket", -8),
+                                 srv + "Cité": Competance(srv + "Cité", -8),
+                                 srv + "Extérieur": srv_ext,
+                                 srv + "Désert":
+                                 CompetanceLimitee(srv + "Désert", srv_ext),
+                                 srv + "Forêt":
+                                 CompetanceLimitee(srv + "Forêt", srv_ext),
+                                 srv + "Glaces":
+                                 CompetanceLimitee(srv + "Glaces", srv_ext),
+                                 srv + "Marais":
+                                 CompetanceLimitee(srv + "Marais", srv_ext),
+                                 srv + "Montagne":
+                                 CompetanceLimitee(srv + "Montagne", srv_ext),
+                                 srv + "Sous-sols":
+                                 CompetanceLimitee(srv + "Sous-sols", srv_ext),
+                                 "Travestissement":
+                                 Competance("Travestissement", -8)}
