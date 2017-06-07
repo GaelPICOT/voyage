@@ -74,6 +74,7 @@ class TestCaracteristique(unittest.TestCase):
         voy = model.voyageur.Personnage()
         voy.caracteristiques["Rêve"].valeur = 15
         self.assertEqual(int(voy.caracteristiques["Rêve"]), 15)
+        self.assertEqual(voy.points["Rêve"], 15)
         self.assertEqual(int(voy.competances["Bricollage"]), -4)
         voy.competances["Bricollage"] += 1
         self.assertEqual(int(voy.competances["Bricollage"]), -3)

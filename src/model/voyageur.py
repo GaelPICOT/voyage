@@ -115,6 +115,18 @@ class Personnage(object):
             self._points["Rêve"] -= 1
 
     @property
+    def points(self):
+        """ property to acces to points
+        """
+        return self._points
+
+    @property
+    def ceuils(self):
+        """ property to acces to seuils
+        """
+        return self._seuils
+
+    @property
     def main_principale(self):
         """ property pour la main principale
         """
