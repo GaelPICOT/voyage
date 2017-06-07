@@ -8,8 +8,43 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import dice
+import model.temps
 import math
 from model.competance import Caracteristiques, Competances
+
+
+class FatigueSegmet(object):
+    """ modelise un segment de fatique
+    """
+    def __init__(self, size=5):
+        """ initialisation
+        """
+        self._size = size
+        self._used = 0
+
+
+class FatigueCount(object):
+    """ conteur de fatigue
+    """
+    def __init__(self):
+        """ initialisation
+        """
+        self._segments = {0: [FatigueSegmet(2), FatigueSegmet(3),
+                              FatigueSegmet(3)],
+                          -1: [FatigueSegmet(2), FatigueSegmet(3),
+                               FatigueSegmet(3)],
+                          -2: FatigueSegmet(2),
+                          -3: FatigueSegmet(3),
+                          -4: FatigueSegmet(3),
+                          -5: FatigueSegmet(2),
+                          -6: FatigueSegmet(3),
+                          -7: FatigueSegmet(3)
+                          }
+        self._malus = 0
+
+    def recalculate_seg(self, endurence=15):
+        """ (re)calculate segment
+        """
 
 
 class Personnage(object):
@@ -31,12 +66,12 @@ class Personnage(object):
         self._carac["Rêve"].value_changed.connect(self.calculate_reve)
         self.calculate_reve()
         # + dom et enc
-        self._carac["Taille"].value_changed.connect(self.calculate_vie)
-        self._carac["Force"].value_changed.connect(self.calculate_vie)
+        self._carac["Taille"].value_changed.connect(self.calculate_p_dom)
+        self._carac["Force"].value_changed.connect(self.calculate_p_dom)
         self.calculate_p_dom()
         # signe particulier
         # heure de naissance
-        self._h_nais = 0
+        self._h_nais = model.temps.heures.vaisseau
         # age
         self._age = 18
         if dice.roll("1d12").pop() == 1:
@@ -91,6 +126,7 @@ class Personnage(object):
             self._points["Endurence"] = end2
         else:
             self._points["Endurence"] = end1
+        self._fatigue = FatigueCount()
         # seuil de constitution
         if const < 9:
             self._seuils["Constitution"] = 2
