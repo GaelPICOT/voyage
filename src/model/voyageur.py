@@ -16,11 +16,16 @@ from model.competance import Caracteristiques, Competances
 class FatigueSegmet(object):
     """ modelise un segment de fatique
     """
-    def __init__(self, size=5):
+    def __init__(self, size):
         """ initialisation
         """
         self._size = size
         self._used = 0
+
+    def resize(self, new_size):
+        """ redefine size
+        """
+        self._size = new_size
 
 
 class FatigueCount(object):
@@ -42,9 +47,25 @@ class FatigueCount(object):
                           }
         self._malus = 0
 
-    def recalculate_seg(self, endurence=15):
+    def recalculate_seg(self, endurence=16):
         """ (re)calculate segment
         """
+        v_max = endurence // 6
+        mod_end = endurence % 8
+
+        def assigne_value(segment1, segmet2, mod_trans):
+            if mod_end > mod_trans:
+                segment1.resize(v_max)
+                segmet2.resize(v_max)
+            else:
+                segment1.resize(v_max-1)
+                segmet2.resize(v_max-1)
+        assigne_value(self._segments[-7], self._segments[-1][2], 0)
+        assigne_value(self._segments[-4], self._segments[0][2], 1)
+        assigne_value(self._segments[-6], self._segments[-1][1], 2)
+        assigne_value(self._segments[-3], self._segments[0][1], 3)
+        assigne_value(self._segments[-5], self._segments[-1][0], 4)
+        assigne_value(self._segments[-2], self._segments[0][0], 5)
 
 
 class Personnage(object):
