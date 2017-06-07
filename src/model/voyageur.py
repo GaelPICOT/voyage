@@ -16,25 +16,24 @@ class Personnage(object):
     """ objet permétant de créé un personnage.
     """
     def __init__(self):
-        self._caracteristiques = Caracteristiques()
+        self._carac = Caracteristiques()
         self._competances = Competances()
         # points
         self._points = {}
-        # points de rêve
-        self._points["Rêve"] = self._caracteristiques["Rêve"].valeur
-        self.calculate_vie_const()
         # seuils
         self._seuils = {}
-        # seuil d'encombrement
-        self._seuils["Encombrement"] = 0
-        # seuil de sustentation
-        self._seuils["Sustentation"] = 0
-        # seuil de constitution
-        self._seuils["Constitution"] = 0
-        # seuil de rêve
-        self._seuils["Rêve"] = self._points["Rêve"]
-        # +dom
-        self._seuils["+dom"] = 0
+        # ajout gestion vie est endurence
+        self._carac["Taille"].value_changed.connect(self.calculate_vie)
+        self._carac["Constitution"].value_changed.connect(self.calculate_vie)
+        self._carac["Volonté"].value_changed.connect(self.calculate_vie)
+        self.calculate_vie()
+        # ajout gestion rêve
+        self._carac["Rêve"].value_changed.connect(self.calculate_reve)
+        self.calculate_reve()
+        # + dom et enc
+        self._carac["Taille"].value_changed.connect(self.calculate_vie)
+        self._carac["Force"].value_changed.connect(self.calculate_vie)
+        self.calculate_p_dom()
         # signe particulier
         # heure de naissance
         self._h_nais = 0
@@ -45,21 +44,69 @@ class Personnage(object):
         else:
             self._mainhand = "droite"
 
-    def calculate_vie_const(self, _=None):
-        """ re calcule la vie et la constitution
+    def calculate_p_dom(self, _=None):
+        """ (re)calculate +dom et encombrement
+        """
+        taille = self._carac["Taille"].valeur
+        force = self._carac["Force"].valeur
+        enc = (taille + force)/2
+        # seuil d'encombrement
+        self._seuils["Encombrement"] = enc
+        # +dom
+        if enc < 8:
+            self._seuils["+dom"] = -1
+        elif enc < 12:
+            self._seuils["+dom"] = 0
+        elif enc < 14:
+            self._seuils["+dom"] = 1
+        else:
+            self._seuils["+dom"] = 2
+
+    def calculate_reve(self, _=None):
+        """ (re)calculate reve et seuil
+        """
+        if "Rêve" not in self._points.keys():
+            # points de rêve
+            self._points["Rêve"] = self._carac["Rêve"].valeur
+            # seuil de rêve
+            self._seuils["Rêve"] = self._points["Rêve"]
+        else:
+            if self._points["Rêve"] < self._carac["Rêve"].valeur:
+                self._points["Rêve"] = self._carac["Rêve"].valeur
+            if self._seuils["Rêve"] < self._carac["Rêve"].valeur:
+                self._seuils["Rêve"] = self._carac["Rêve"].valeur
+
+    def calculate_vie(self, _=None):
+        """ (re)calcule la vie et la constitution et les seuilles en lien
         """
         # endurence potentiel 1
-        end1 = (self._caracteristiques["Taille"].valeur +
-                self._caracteristiques["Constitution"].valeur)
+        const = self._carac["Constitution"].valeur
+        taille = self._carac["Taille"].valeur
+        end1 = taille + const
         # points de vie
-        self._points["Vie"] = end1 / 2
-        self._points["Vie"] = math.ceil(self._points["Vie"])
+        self._points["Vie"] = math.ceil(end1 / 2)
         # points d'endurence
-        end2 = self._points["Vie"] + self._caracteristiques["Volonté"].valeur
+        end2 = self._points["Vie"] + self._carac["Volonté"].valeur
         if end2 >= end1:
             self._points["Endurence"] = end2
         else:
             self._points["Endurence"] = end1
+        # seuil de constitution
+        if const < 9:
+            self._seuils["Constitution"] = 2
+        elif const < 12:
+            self._seuils["Constitution"] = 3
+        elif const < 15:
+            self._seuils["Constitution"] = 4
+        else:
+            self._seuils["Constitution"] = 5
+        # seuil de sustentation
+        if taille < 10:
+            self._seuils["Sustentation"] = 2
+        elif taille < 14:
+            self._seuils["Sustentation"] = 3
+        else:
+            self._seuils["Sustentation"] = 4
 
     def passe_chateau_dormant(self):
         """ passage de chateau dormant
@@ -77,7 +124,7 @@ class Personnage(object):
     def caracteristiques(self):
         """ property pour accédé aux caracteristiques
         """
-        return self._caracteristiques
+        return self._carac
 
     @property
     def competances(self):
