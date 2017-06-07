@@ -27,6 +27,14 @@ class FatigueSegmet(object):
         """
         self._size = new_size
 
+    def plain(self):
+        """ return True si le segment et plain
+        """
+        if self._used >= self._size:
+            return True
+        else:
+            return False
+
 
 class FatigueCount(object):
     """ conteur de fatigue
@@ -46,6 +54,9 @@ class FatigueCount(object):
                           -7: FatigueSegmet(3)
                           }
         self._malus = 0
+        self._seg_lineaire = self._segments[0] + self._segments[-1]
+        for i in range(6):
+            self._seg_lineaire.append(self._segments[-2-i])
 
     def recalculate_seg(self, endurence=16):
         """ (re)calculate segment
@@ -66,6 +77,10 @@ class FatigueCount(object):
         assigne_value(self._segments[-3], self._segments[0][1], 3)
         assigne_value(self._segments[-5], self._segments[-1][0], 4)
         assigne_value(self._segments[-2], self._segments[0][0], 5)
+
+    def add_fatigue(self, fatigue):
+        """ ajoute de la fatigue
+        """
 
 
 class Personnage(object):
