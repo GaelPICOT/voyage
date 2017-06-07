@@ -53,6 +53,7 @@ class Personnage(object):
     def __init__(self):
         self._carac = Caracteristiques()
         self._competances = Competances()
+        self._fatigue = FatigueCount()
         # points
         self._points = {}
         # seuils
@@ -126,7 +127,7 @@ class Personnage(object):
             self._points["Endurence"] = end2
         else:
             self._points["Endurence"] = end1
-        self._fatigue = FatigueCount()
+        self._fatigue.recalculate_seg(self._points["Endurence"])
         # seuil de constitution
         if const < 9:
             self._seuils["Constitution"] = 2
