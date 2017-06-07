@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-''' élément pour la gestion des compétance.
+''' élément pour la gestion des compétances et caractéristiques.
 
     :platform: Unix, Windows
     :synopsis: gestion des compétance
