@@ -51,7 +51,7 @@ class FatigueCount(object):
         """ (re)calculate segment
         """
         v_max = endurence // 6
-        mod_end = endurence % 8
+        mod_end = endurence % 6
 
         def assigne_value(segment1, segmet2, mod_trans):
             if mod_end > mod_trans:
