@@ -12,22 +12,60 @@ import math
 import dice
 
 
-class ResultatAction(object):
+class Action(object):
     """ resultat d'une action
     """
-    def __init__(self, pc_reussit):
+    def __init__(self, competance=10, ajustement=0):
         """ init
         """
+        self._pc_reussit = 0
         self._lancer = dice.roll("1d100+0")
-        self._reusite = pc_reussit <= self._lancer
+        if ajustement >= -8:
+            self._pc_reussit = competance * ((ajustement + 10) // 2)
+        elif ajustement >= -10:
+            self._pc_reussit = competance // (ajustement * 2)
+        elif ajustement > -17:
+            self._pc_reussit = 1
+        else:
+            self._pc_reussit = 0
+        self._reusite = self._pc_reussit <= self._lancer
+        # réussite particulière
+        self._r_part = self._lancer >= math.floor(self._pc_reussit/0.2)
+        # réussite significative
+        self._r_sign = self._lancer >= math.floor(self._pc_reussit/0.5)
+        # échec particulière
+        self._e_part = self._lancer >= 100 - math.floor(100-self._pc_reussit /
+                                                        0.2)
+        # échec total
+        self._e_tot = self._lancer >= 100 - math.floor(100-self._pc_reussit /
+                                                       0.1)
+        if ajustement <= -11:
+            self._r_part = False
+            self._r_sign = False
+            self._e_part = not self._reusite
+            if ajustement == -11:
+                self._e_tot = self._lancer >= 90
+            elif ajustement == -12:
+                self._e_tot = self._lancer >= 70
+            elif ajustement == -13:
+                self._e_tot = self._lancer >= 50
+            elif ajustement == -14:
+                self._e_tot = self._lancer >= 30
+            elif ajustement == -15:
+                self._e_tot = self._lancer >= 10
+            elif ajustement == -16:
+                self._e_tot = self._lancer >= 2
+            else:
+                self._e_tot = self._lancer >= 1
 
+    @property
+    def lancer(self):
+        """ property for roll result
+        """
+        return self._lancer
 
-def action(self, competance=10, ajustement=0):
-    """ jouer une action
-    """
-    pc_reussit = 0
-    if ajustement >= -8:
-        pc_reussit = math.floor(competance * ((ajustement + 10) / 2))
-    elif ajustement >= -10:
-        pc_reussit = math.floor(competance / (ajustement * 2))
-    return ResultatAction(pc_reussit)
+    @property
+    def reussite(self):
+        """ property pour accédé à la réussi ou non de l'action
+        """
+        return self._reusite
