@@ -79,6 +79,20 @@ class TestAction(unittest.TestCase):
         self.assertEqual(a1.r_sign, True)
         self.assertEqual(a1.reussite, True)
         self.assertEqual(a1.p_qualite, 2)
+        a1 = Action(9, -8, 2)
+        self.assertEqual(a1.e_part, False)
+        self.assertEqual(a1.e_tot, False)
+        self.assertEqual(a1.r_part, True)
+        self.assertEqual(a1.r_sign, True)
+        self.assertEqual(a1.reussite, True)
+        self.assertEqual(a1.p_qualite, 2)
+        a1 = Action(8, -10, 92)
+        self.assertEqual(a1.e_part, True)
+        self.assertEqual(a1.e_tot, True)
+        self.assertEqual(a1.r_part, False)
+        self.assertEqual(a1.r_sign, False)
+        self.assertEqual(a1.reussite, False)
+        self.assertEqual(a1.p_qualite, -6)
 
 
 if __name__ == '__main__':
