@@ -61,6 +61,23 @@ class Action(object):
                 self._e_tot = self._lancer >= 1
 
     @property
+    def p_qualite(self):
+        """ return nombre de point de qualité
+        """
+        if self._e_tot:
+            return -6
+        elif self._e_part:
+            return -4
+        elif not self._reusite:
+            return -2
+        elif self._r_part:
+            return 2
+        elif self._r_sign:
+            return 1
+        else:
+            return 0
+
+    @property
     def lancer(self):
         """ property for roll result
         """
