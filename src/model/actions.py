@@ -24,7 +24,7 @@ class Action(object):
         else:
             self._lancer = lancer
         if ajustement >= -8:
-            self._pc_reussit = competance * ((ajustement + 10) // 2)
+            self._pc_reussit = (competance * (ajustement + 10)) // 2
         elif ajustement >= -10:
             self._pc_reussit = competance // (ajustement * 2)
         elif ajustement > -17:
@@ -42,7 +42,7 @@ class Action(object):
         self._e_part = self._lancer >= 100 - math.floor((100-self._pc_reussit)
                                                         * 0.2)
         # échec total
-        self._e_tot = self._lancer >= 100 - math.floor((100-self._pc_reussit) *
+        self._e_tot = self._lancer > 100 - math.floor((100-self._pc_reussit) *
                                                        0.1)
         if ajustement <= -11:
             self._r_part = False

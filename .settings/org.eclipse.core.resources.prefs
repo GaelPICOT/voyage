@@ -8,4 +8,5 @@ encoding//src/model/observer.py=utf-8
 encoding//src/model/sante.py=utf-8
 encoding//src/model/temps.py=utf-8
 encoding//src/model/voyageur.py=utf-8
+encoding//src/test/action.py=utf-8
 encoding//src/test/voyageur.py=utf-8
