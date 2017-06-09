@@ -35,7 +35,7 @@ class Action(object):
         if self._pc_reussit >= 100:
             self._reusite = self._lancer == 100
         # réussite particulière
-        self._r_part = self._lancer <= math.floor(self._pc_reussit*0.2)
+        self._r_part = self._lancer <= math.ceil(self._pc_reussit*0.2)
         # réussite significative
         self._r_sign = self._lancer <= math.floor(self._pc_reussit*0.5)
         # échec particulière
@@ -43,7 +43,7 @@ class Action(object):
                                                         * 0.2)
         # échec total
         self._e_tot = self._lancer > 100 - math.floor((100-self._pc_reussit) *
-                                                       0.1)
+                                                      0.1)
         if ajustement <= -11:
             self._r_part = False
             self._r_sign = False
