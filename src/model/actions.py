@@ -15,11 +15,14 @@ import dice
 class Action(object):
     """ resultat d'une action
     """
-    def __init__(self, competance=10, ajustement=0):
+    def __init__(self, competance=10, ajustement=0, lancer=None):
         """ init
         """
         self._pc_reussit = 0
-        self._lancer = dice.roll("1d100+0")
+        if lancer is None:
+            self._lancer = dice.roll("1d100+0")
+        else:
+            self._lancer = lancer
         if ajustement >= -8:
             self._pc_reussit = competance * ((ajustement + 10) // 2)
         elif ajustement >= -10:
@@ -28,18 +31,18 @@ class Action(object):
             self._pc_reussit = 1
         else:
             self._pc_reussit = 0
-        self._reusite = self._pc_reussit <= self._lancer
+        self._reusite = self._pc_reussit >= self._lancer
         if self._pc_reussit >= 100:
             self._reusite = self._lancer == 100
         # réussite particulière
-        self._r_part = self._lancer >= math.floor(self._pc_reussit/0.2)
+        self._r_part = self._lancer <= math.floor(self._pc_reussit*0.2)
         # réussite significative
-        self._r_sign = self._lancer >= math.floor(self._pc_reussit/0.5)
+        self._r_sign = self._lancer <= math.floor(self._pc_reussit*0.5)
         # échec particulière
-        self._e_part = self._lancer >= 100 - math.floor(100-self._pc_reussit /
-                                                        0.2)
+        self._e_part = self._lancer >= 100 - math.floor((100-self._pc_reussit)
+                                                        * 0.2)
         # échec total
-        self._e_tot = self._lancer >= 100 - math.floor(100-self._pc_reussit /
+        self._e_tot = self._lancer >= 100 - math.floor((100-self._pc_reussit) *
                                                        0.1)
         if ajustement <= -11:
             self._r_part = False
