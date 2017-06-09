@@ -29,6 +29,8 @@ class Action(object):
         else:
             self._pc_reussit = 0
         self._reusite = self._pc_reussit <= self._lancer
+        if self._pc_reussit >= 100:
+            self._reusite = self._lancer == 100
         # réussite particulière
         self._r_part = self._lancer >= math.floor(self._pc_reussit/0.2)
         # réussite significative
@@ -69,3 +71,27 @@ class Action(object):
         """ property pour accédé à la réussi ou non de l'action
         """
         return self._reusite
+
+    @property
+    def r_part(self):
+        """ property pour accédé à la réussi particulière de l'action
+        """
+        return self._r_part
+
+    @property
+    def r_sign(self):
+        """ property pour accédé à la réussi sgnificative de l'action
+        """
+        return self._r_sign
+
+    @property
+    def e_part(self):
+        """ property pour accédé à l'échec particulier de l'action
+        """
+        return self._e_part
+
+    @property
+    def e_tot(self):
+        """ property pour accédé à à l'échec total de l'action
+        """
+        return self._e_tot
