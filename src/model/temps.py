@@ -8,7 +8,6 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 from enum import Enum
-from model.actions import Action
 
 
 class heures(Enum):
@@ -31,3 +30,27 @@ class heures(Enum):
 class tache(object):
     """ action sur la durée
     """
+    def __init__(self, pt_tache, difficulte, periodicite):
+        """ initialisation
+        """
+        self._pt_tache = pt_tache
+        self._pt_effectue = 0
+        self._difficulte = difficulte
+        self._periodicite = periodicite
+
+    def add_sction(self, action):
+        """ ajouté une action sur la tache
+        """
+        self._pt_effectue += action.p_tache
+
+    @property
+    def finish(self):
+        return self._pt_effectue >= self._pt_tache
+
+    @property
+    def periodicite(self):
+        return self._periodicite
+
+    @property
+    def difficulte(self):
+        return self._difficulte
