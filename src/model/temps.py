@@ -8,6 +8,7 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 from enum import Enum
+from model.actions import Action
 
 
 class heures(Enum):
@@ -25,3 +26,8 @@ class heures(Enum):
     araigne = 10
     roseau = 11
     chateau_dormant = 12
+
+
+class tache(object):
+    """ action sur la durée
+    """

@@ -19,15 +19,25 @@ class Action(object):
         """ init
         """
         self._pc_reussit = 0
+        # competance
+        self._cmp = competance
+        # ajustement
+        self._ajst = ajustement
+        # roll
+        self.roll(lancer)
+
+    def roll(self, lancer=None):
+        """ roll dice again
+        """
         if lancer is None:
             self._lancer = dice.roll("1d100+0")
         else:
             self._lancer = lancer
-        if ajustement >= -8:
-            self._pc_reussit = (competance * (ajustement + 10)) // 2
-        elif ajustement >= -10:
-            self._pc_reussit = competance // (ajustement * 2)
-        elif ajustement > -17:
+        if self._ajst >= -8:
+            self._pc_reussit = (self._cmp * (self._ajst + 10)) // 2
+        elif self._ajst >= -10:
+            self._pc_reussit = self._cmp // (self._ajst * 2)
+        elif self._ajst > -17:
             self._pc_reussit = 1
         else:
             self._pc_reussit = 0
@@ -44,21 +54,21 @@ class Action(object):
         # échec total
         self._e_tot = self._lancer > 100 - math.floor((100-self._pc_reussit) *
                                                       0.1)
-        if ajustement <= -11:
+        if self._ajst <= -11:
             self._r_part = False
             self._r_sign = False
             self._e_part = not self._reusite
-            if ajustement == -11:
+            if self._ajst == -11:
                 self._e_tot = self._lancer >= 90
-            elif ajustement == -12:
+            elif self._ajst == -12:
                 self._e_tot = self._lancer >= 70
-            elif ajustement == -13:
+            elif self._ajst == -13:
                 self._e_tot = self._lancer >= 50
-            elif ajustement == -14:
+            elif self._ajst == -14:
                 self._e_tot = self._lancer >= 30
-            elif ajustement == -15:
+            elif self._ajst == -15:
                 self._e_tot = self._lancer >= 10
-            elif ajustement == -16:
+            elif self._ajst == -16:
                 self._e_tot = self._lancer >= 2
             else:
                 self._e_tot = self._lancer >= 1
