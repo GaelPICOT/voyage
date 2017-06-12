@@ -81,6 +81,23 @@ class Action(object):
             return 0
 
     @property
+    def p_tache(self):
+        """ return nombre de point de qualité
+        """
+        if self._e_tot:
+            return -4
+        elif self._e_part:
+            return -2
+        elif not self._reusite:
+            return 0
+        elif self._r_part:
+            return 3
+        elif self._r_sign:
+            return 2
+        else:
+            return 1
+
+    @property
     def lancer(self):
         """ property for roll result
         """
