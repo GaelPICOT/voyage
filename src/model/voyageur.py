@@ -23,16 +23,18 @@ class FatigueSegmet(object):
         self._used = 0
 
     @property
-    def size(self):
-        """ getter size
+    def taille(self):
+        """ size getter
         """
         return self._size
 
-    def resize(self, new_size):
-        """ redefine size
+    @property
+    def used(self):
+        """ used getter
         """
-        self._size = new_size
+        return self._used
 
+    @property
     def plain(self):
         """ return True si le segment et plain
         """
@@ -40,6 +42,16 @@ class FatigueSegmet(object):
             return True
         else:
             return False
+
+    def resize(self, new_size):
+        """ redefine size
+        """
+        self._size = new_size
+
+    def recupere(self):
+        """ recupere le segment
+        """
+        self._used = 0
 
     def add_fatigue(self, fatigue):
         """ ajoute de la fatigue
@@ -101,27 +113,41 @@ class FatigueCount(object):
         assigne_value(self._segments[-5], self._segments[-1][0], 4)
         assigne_value(self._segments[-2], self._segments[0][0], 5)
 
+    @property
+    def malus(self):
+        """ retourne le malus du à la fatigue
+        """
+        if not self._segments[0][2].plain:
+            return 0
+        if not self._segments[-1][2].plain:
+            return -1
+        for i in range(6):
+            if self._segments[-2-i].plain:
+                return -2-i
+        return -7
+
+    def recuperation(self):
+        """ recuperation de fatigue
+        """
+        seg_pes = None
+        for segment in self._seg_lineaire:
+            if not segment.plain:
+                if segment.taille < segment.used//2:
+                    if seg_pes is not None:
+                        seg_pes.recupere()
+                segment.recupere()
+                break
+            seg_pes = segment
+
     def add_fatigue(self, fatigue):
         """ ajoute de la fatigue
         """
         for segment in self._seg_lineaire:
-            if not segment.plain():
+            if not segment.plain:
                 fatigue = segment.add_fatigue(fatigue)
                 if fatigue == 0:
                     return 0
         return fatigue
-
-    def malus(self):
-        """ retourne le malus du à la fatigue
-        """
-        if not self._segments[0][2].plain():
-            return 0
-        if not self._segments[-1][2].plain():
-            return -1
-        for i in range(6):
-            if self._segments[-2-i].plain():
-                return -2-i
-        return -7
 
 
 class Personnage(object):
