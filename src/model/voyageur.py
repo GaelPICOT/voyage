@@ -22,6 +22,12 @@ class FatigueSegmet(object):
         self._size = size
         self._used = 0
 
+    @property
+    def size(self):
+        """ getter size
+        """
+        return self._size
+
     def resize(self, new_size):
         """ redefine size
         """
@@ -34,6 +40,17 @@ class FatigueSegmet(object):
             return True
         else:
             return False
+
+    def add_fatigue(self, fatigue):
+        """ ajoute de la fatigue
+        """
+        self._used += fatigue
+        if self._used > self._size:
+            rest = self._used - self._size
+            self._used = self._size
+            return rest
+        else:
+            return 0
 
 
 class FatigueCount(object):
@@ -58,10 +75,16 @@ class FatigueCount(object):
         for i in range(6):
             self._seg_lineaire.append(self._segments[-2-i])
 
+    @property
+    def segments(self):
+        """ getter segments
+        """
+        return self._segments
+
     def recalculate_seg(self, endurence=16):
         """ (re)calculate segment
         """
-        v_max = endurence // 6
+        v_max = (endurence // 6) + 1
         mod_end = endurence % 6
 
         def assigne_value(segment1, segmet2, mod_trans):
@@ -81,6 +104,24 @@ class FatigueCount(object):
     def add_fatigue(self, fatigue):
         """ ajoute de la fatigue
         """
+        for segment in self._seg_lineaire:
+            if not segment.plain():
+                fatigue = segment.add_fatigue(fatigue)
+                if fatigue == 0:
+                    return 0
+        return fatigue
+
+    def malus(self):
+        """ retourne le malus du à la fatigue
+        """
+        if not self._segments[0][2].plain():
+            return 0
+        if not self._segments[-1][2].plain():
+            return -1
+        for i in range(6):
+            if self._segments[-2-i].plain():
+                return -2-i
+        return -7
 
 
 class Personnage(object):
