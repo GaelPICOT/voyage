@@ -10,6 +10,7 @@
 import dice
 import model.temps
 import math
+from enum import Enum
 from model.competance import Caracteristiques, Competances
 
 
@@ -207,6 +208,58 @@ class SignesParticuliers(object):
         self._autres = ""
 
 
+class Compteur(object):
+    """ definit tous les compteur (vie, endurence,...)
+    """
+    def __init__(self, vmax, valeur=None):
+        self._vmax = vmax
+        if valeur is None:
+            self._valeur = vmax
+        else:
+            self._valeur = valeur
+
+    @property
+    def vmax(self):
+        """ return valeur max
+        """
+        return self._vmax
+
+    @vmax.setter
+    def vmax(self, vmax):
+        """ setter vmax
+        """
+        self._vmax = vmax
+
+    @property
+    def valeur(self):
+        """  return actual value
+        """
+        return self._valeur
+
+    @valeur.setter
+    def valeur(self, valeur):
+        """ setter valeur
+        """
+        self._valeur = valeur
+
+
+class Blessure(object):
+    """ decris une blessure
+    """
+    class TypeB(Enum):
+        """ diferant type de blessure
+        """
+        eraflure = 0
+        legere = 2
+        grave = 4
+        critique = 6
+
+    def __init__(self, typeB=Blessure.TypeB.eraflure):
+        """ init
+        """
+        self._type = typeB
+
+
 class Personnage(object):
     """ objet permétant de créé un personnage.
     """
@@ -281,14 +334,21 @@ class Personnage(object):
         taille = self._carac["Taille"].valeur
         end1 = taille + const
         # points de vie
-        self._points["Vie"] = math.ceil(end1 / 2)
-        # points d'endurence
-        end2 = self._points["Vie"] + self._carac["Volonté"].valeur
-        if end2 >= end1:
-            self._points["Endurence"] = end2
+        if "Vie" not in self._points.keys():
+            self._points["Vie"] = Compteur(math.ceil(end1 / 2))
         else:
-            self._points["Endurence"] = end1
-        self._fatigue.recalculate_seg(self._points["Endurence"])
+            self._points["Vie"].vmax = math.ceil(end1 / 2)
+        # points d'endurence
+        end2 = self._points["Vie"].valeur + self._carac["Volonté"].valeur
+        if end2 >= end1:
+            end = end2
+        else:
+            end = end1
+        if "Endurence" not in self._points.keys():
+            self._points["Endurence"] = Compteur(end)
+        else:
+            self._points["Endurence"].vmax = end
+        self._fatigue.recalculate_seg(self._points["Endurence"].vmax)
         # seuil de constitution
         if const < 9:
             self._seuils["Constitution"] = 2
@@ -341,3 +401,17 @@ class Personnage(object):
         """
         """
         return self._competances
+
+    @property
+    def fatigue(self):
+        """ getter fatigue
+        """
+        return self._fatigue
+
+    @property
+    def etat_general(self):
+        """ calcule l'état generale
+        """
+        malus_fatigue = self._fatigue.malus
+        pv_manquant = self._points["Vie"].vmax - self._points["Vie"].valeur
+        return malus_fatigue - pv_manquant
