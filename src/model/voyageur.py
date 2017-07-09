@@ -117,27 +117,29 @@ class FatigueCount(object):
     def malus(self):
         """ retourne le malus du à la fatigue
         """
-        if not self._segments[0][2].plain:
+        if self._segments[-1][0].used == 0:
             return 0
-        if not self._segments[-1][2].plain:
+        if self._segments[-2].used == 0:
             return -1
         for i in range(6):
-            if self._segments[-2-i].plain:
+            if not self._segments[-2-i].plain:
                 return -2-i
         return -7
 
     def recuperation(self):
         """ recuperation de fatigue
         """
-        seg_pes = None
+        seg_pres = None
         for segment in self._seg_lineaire:
             if not segment.plain:
-                if segment.taille < segment.used//2:
-                    if seg_pes is not None:
-                        seg_pes.recupere()
+                if segment.used < segment.taille/2:
+                    if seg_pres is not None:
+                        seg_pres.recupere()
+                elif segment.used == 0:
+                    segment = seg_pres
                 segment.recupere()
                 break
-            seg_pes = segment
+            seg_pres = segment
 
     def add_fatigue(self, fatigue):
         """ ajoute de la fatigue
