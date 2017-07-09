@@ -152,6 +152,61 @@ class FatigueCount(object):
         return fatigue
 
 
+class Cheveux(object):
+    """ decrit les cheveux d'une personne
+    """
+    def __init__(self):
+        self._coul = "brun"  # couleur de cheveux
+        self._long = "court"  # longueur de cheveux
+        self._quantite = "nombreux"  # quantité de cheveux
+
+    @property
+    def coul(self):
+        """ couleur de cheveu
+        """
+        return self._coul
+
+    @property
+    def long(self):
+        """ longueur de cheveu
+        """
+        return self._long
+
+    @property
+    def quantite(self):
+        """ quantité de cheveu
+        """
+        return self.quantite
+
+    def edite_param(self, coul=None, long=None, quantite=None):
+        """ edite un ou plusieur parametre des cheveux
+        """
+        if coul is not None:
+            self._coul = coul
+        if long is not None:
+            self._long = long
+        if quantite is not None:
+            self._quantite = quantite
+
+
+class SignesParticuliers(object):
+    """ regroupe tous les signe particuliers
+    """
+    def __init__(self):
+        """ init
+        """
+        self._nom = ""
+        self._sexe = "Femme"  # peut être multiple en fonction de la race
+        self._HN = None  # heure de naissance
+        self._beaute = 10  # beauté
+        self._age = 18
+        self._taille = 1.7  # en m
+        self._poids = 70  # en kG
+        self._cheveux = Cheveux()
+        self._yeux = "vert"
+        self._autres = ""
+
+
 class Personnage(object):
     """ objet permétant de créé un personnage.
     """
@@ -184,6 +239,7 @@ class Personnage(object):
             self._mainhand = "ambidextre"
         else:
             self._mainhand = "droite"
+        self._signes_particuliers = SignesParticuliers()
 
     def calculate_p_dom(self, _=None):
         """ (re)calculate +dom et encombrement

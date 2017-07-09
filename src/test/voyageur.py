@@ -137,6 +137,7 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(fc.segments[-1][1].taille, 4)
 
     def test_fatigue_utilisation(self):
+        # avec 16 endurence
         fc = model.voyageur.FatigueCount()
         fc.add_fatigue(11)
         self.assertEqual(fc.malus, -1)
@@ -155,6 +156,7 @@ class TestCaracteristique(unittest.TestCase):
         fc.recuperation()
         fc.recuperation()
         self.assertEqual(fc.malus, 0)
+        # avec 27 endurence
         fc = model.voyageur.FatigueCount()
         fc.recalculate_seg(27)
         fc.add_fatigue(14)
