@@ -8,14 +8,14 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import unittest
-import model.competance
-import model.voyageur
+import model.rules.rdd.competance
+import model.rules.rdd.voyageur
 
 
 class TestCaracteristique(unittest.TestCase):
 
     def test_caracteristique_evolution(self):
-        c1 = model.competance.Caracteristique("test")
+        c1 = model.rules.rdd.competance.Caracteristique("test")
         self.assertEqual(int(c1), 10)
         c1.exp += 8
         self.assertEqual(int(c1), 11)
@@ -46,7 +46,7 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(c1.exp), 0)
 
     def test_caracteristiques(self):
-        carac = model.competance.Caracteristiques()
+        carac = model.rules.rdd.competance.Caracteristiques()
         carac["Rêve"].valeur = 15
         self.assertEqual(int(carac["Rêve"]), 15)
         carac["Taille"].valeur = 15
@@ -62,16 +62,16 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(carac["Force"]), 11)
 
     def test_cmp_tron(self):
-        cmp1 = model.competance.Competance("t1", -6)
-        cmp2 = model.competance.CompetanceTron("t2", cmp1)
-        cmp3 = model.competance.CompetanceTron("t2", cmp2)
+        cmp1 = model.rules.rdd.competance.Competance("t1", -6)
+        cmp2 = model.rules.rdd.competance.CompetanceTron("t2", cmp1)
+        cmp3 = model.rules.rdd.competance.CompetanceTron("t2", cmp2)
         cmp3 += 1
         self.assertEqual(int(cmp1.valeur), -5)
         self.assertEqual(int(cmp2.valeur), -5)
         self.assertEqual(int(cmp3.valeur), -5)
 
     def test_voyageur(self):
-        voy = model.voyageur.Personnage()
+        voy = model.rules.rdd.voyageur.Personnage()
         voy.caracteristiques["Rêve"].valeur = 15
         self.assertEqual(int(voy.caracteristiques["Rêve"]), 15)
         self.assertEqual(voy.points["Rêve"], 15)
@@ -97,7 +97,7 @@ class TestCaracteristique(unittest.TestCase):
         self.assertEqual(int(voy.competances["Survie en Forêt"]), -7)
 
     def test_fatigue_recalculate(self):
-        fc = model.voyageur.FatigueCount()
+        fc = model.rules.rdd.voyageur.FatigueCount()
         self.assertEqual(fc.segments[-3].taille, 3)
         fc.recalculate_seg(30)
         self.assertEqual(fc.segments[-3].taille, 5)
@@ -138,7 +138,7 @@ class TestCaracteristique(unittest.TestCase):
 
     def test_fatigue_utilisation(self):
         # avec 16 endurence
-        fc = model.voyageur.FatigueCount()
+        fc = model.rules.rdd.voyageur.FatigueCount()
         fc.add_fatigue(11)
         self.assertEqual(fc.malus, -1)
         fc.recuperation()
@@ -157,7 +157,7 @@ class TestCaracteristique(unittest.TestCase):
         fc.recuperation()
         self.assertEqual(fc.malus, 0)
         # avec 27 endurence
-        fc = model.voyageur.FatigueCount()
+        fc = model.rules.rdd.voyageur.FatigueCount()
         fc.recalculate_seg(27)
         fc.add_fatigue(14)
         self.assertEqual(fc.malus, -1)

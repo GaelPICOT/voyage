@@ -8,9 +8,9 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import dice
-import model.temps
+import model.rules.rdd.temps
 import math
-from model.competance import Caracteristiques, Competances
+from model.rules.rdd.competance import Caracteristiques, Competances
 
 
 class FatigueSegmet(object):
@@ -267,7 +267,7 @@ class Personnage(object):
         self.calculate_p_dom()
         # signe particulier
         # heure de naissance
-        self._h_nais = model.temps.heures.vaisseau
+        self._h_nais = model.rules.rdd.temps.heures.vaisseau
         # age
         self._age = 18
         if dice.roll("1d12").pop() == 1:

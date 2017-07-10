@@ -8,7 +8,7 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import unittest
-from model.actions import Action
+from model.rules.rdd.actions import Action
 
 
 class TestAction(unittest.TestCase):
