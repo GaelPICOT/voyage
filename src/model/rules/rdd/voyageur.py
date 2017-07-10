@@ -13,6 +13,35 @@ import math
 from model.rules.rdd.competance import Caracteristiques, Competances
 
 
+class ConteurLimiteError(Exception):
+    """ conteur depassant une limites
+    """
+    def __init__(self, depacement=0, is_inf=True, info=None):
+        """ init
+        """
+        self._depacement = depacement
+        self._is_inf = is_inf
+        self._info = info
+
+    @property
+    def is_inf(self):
+        """
+        """
+        return self._is_inf
+
+    @property
+    def depacement(self):
+        """ valeur de depacement
+        """
+        return self._depacement
+
+    @property
+    def info(self):
+        """
+        """
+        return self._info
+
+
 class FatigueSegmet(object):
     """ modelise un segment de fatique
     """
@@ -149,7 +178,7 @@ class FatigueCount(object):
                 fatigue = segment.add_fatigue(fatigue)
                 if fatigue == 0:
                     return 0
-        return fatigue
+        raise ConteurLimiteError(fatigue)
 
 
 class Cheveux(object):
@@ -197,7 +226,7 @@ class SignesParticuliers(object):
         """
         self._nom = ""
         self._sexe = "Femme"  # peut être multiple en fonction de la race
-        self._HN = None  # heure de naissance
+        self._HN = model.rules.rdd.temps.heures.vaisseau  # heure de naissance
         self._beaute = 10  # beauté
         self._age = 18
         self._taille = 1.7  # en m
@@ -210,24 +239,44 @@ class SignesParticuliers(object):
 class Compteur(object):
     """ definit tous les compteur (vie, endurence,...)
     """
-    def __init__(self, vmax, valeur=None):
-        self._vmax = vmax
+    def __init__(self, vinit, vmax=None, negatif=0, valeur=None):
+        """ init
+        """
+        self._vinit = vinit
+        if vmax is None:
+            self._vmax = vinit
+        else:
+            self._vmax = vmax
+        self._negatif = negatif
         if valeur is None:
-            self._valeur = vmax
+            self._valeur = vinit
         else:
             self._valeur = valeur
 
     @property
-    def vmax(self):
-        """ return valeur max
+    def vinit(self):
+        """ return valeur vinit
         """
-        return self._vmax
+        return self._vinit
+
+    @vinit.setter
+    def vinit(self, vinit):
+        """ setter vinit
+        """
+        self._vinit = vinit
+        self._valeur = vinit
+
+    @property
+    def vmax(self):
+        """ return valeur vinit
+        """
+        return self._vinit
 
     @vmax.setter
-    def vmax(self, vmax):
-        """ setter vmax
+    def vmax(self, vinit):
+        """ setter vinit
         """
-        self._vmax = vmax
+        self._vinit = vinit
 
     @property
     def valeur(self):
@@ -240,6 +289,40 @@ class Compteur(object):
         """ setter valeur
         """
         self._valeur = valeur
+        if self._valeur >= self._vmax:
+            raise ConteurLimiteError(valeur-self._vmax, False)
+        if self._valeur <= self._vinit:
+            raise ConteurLimiteError(0-self._valeur)
+        if self._valeur <= self._negatif:
+            raise ConteurLimiteError(0-self._valeur, info="limite negative")
+
+    @property
+    def negatif(self):
+        """
+        """
+        return self._negatif
+
+    @negatif.setter
+    def negatif(self, negatif):
+        """
+        """
+        self._negatif = negatif
+
+    def __iadd__(self, valeur):
+        """
+        """
+        self._valeur += valeur
+        if self._valeur >= self._vmax:
+            raise ConteurLimiteError(valeur-self._vmax, False)
+
+    def __isub__(self, valeur):
+        """
+        """
+        self._valeur -= valeur
+        if self._valeur <= self._vinit:
+            raise ConteurLimiteError(0-self._valeur)
+        if self._valeur <= self._negatif:
+            raise ConteurLimiteError(0-self._valeur, info="limite negative")
 
 
 class Personnage(object):
@@ -266,15 +349,11 @@ class Personnage(object):
         self._carac["Force"].value_changed.connect(self.calculate_p_dom)
         self.calculate_p_dom()
         # signe particulier
-        # heure de naissance
-        self._h_nais = model.rules.rdd.temps.heures.vaisseau
-        # age
-        self._age = 18
+        self._signes_particuliers = SignesParticuliers()
         if dice.roll("1d12").pop() == 1:
             self._mainhand = "ambidextre"
         else:
             self._mainhand = "droite"
-        self._signes_particuliers = SignesParticuliers()
 
     def calculate_p_dom(self, _=None):
         """ (re)calculate +dom et encombrement
@@ -319,7 +398,7 @@ class Personnage(object):
         if "Vie" not in self._points.keys():
             self._points["Vie"] = Compteur(math.ceil(end1 / 2))
         else:
-            self._points["Vie"].vmax = math.ceil(end1 / 2)
+            self._points["Vie"].vinit = math.ceil(end1 / 2)
         # points d'endurence
         end2 = self._points["Vie"].valeur + self._carac["Volonté"].valeur
         if end2 >= end1:
@@ -329,17 +408,18 @@ class Personnage(object):
         if "Endurence" not in self._points.keys():
             self._points["Endurence"] = Compteur(end)
         else:
-            self._points["Endurence"].vmax = end
-        self._fatigue.recalculate_seg(self._points["Endurence"].vmax)
+            self._points["Endurence"].vinit = end
+        self._fatigue.recalculate_seg(self._points["Endurence"].vinit)
         # seuil de constitution
         if const < 9:
-            self._seuils["Constitution"] = 2
+            sc = 2
         elif const < 12:
-            self._seuils["Constitution"] = 3
+            sc = 3
         elif const < 15:
-            self._seuils["Constitution"] = 4
+            sc = 4
         else:
-            self._seuils["Constitution"] = 5
+            sc = 5
+        self._seuils["Constitution"] = sc
         # seuil de sustentation
         if taille < 10:
             self._seuils["Sustentation"] = 2
@@ -347,12 +427,20 @@ class Personnage(object):
             self._seuils["Sustentation"] = 3
         else:
             self._seuils["Sustentation"] = 4
+        # vie
+        self._points["Vie"].negatif = sc
 
     def passe_chateau_dormant(self):
         """ passage de chateau dormant
         """
         if self._points["Rêve"] > self._seuils["Rêve"]:
             self._points["Rêve"] -= 1
+
+    def mort(self):
+        """ tue le personnage
+        """
+        self._competances = Competances()
+        self._signes_particuliers = SignesParticuliers()
 
     @property
     def points(self):
@@ -395,5 +483,5 @@ class Personnage(object):
         """ calcule l'état generale
         """
         malus_fatigue = self._fatigue.malus
-        pv_manquant = self._points["Vie"].vmax - self._points["Vie"].valeur
+        pv_manquant = self._points["Vie"].vinit - self._points["Vie"].valeur
         return malus_fatigue - pv_manquant
