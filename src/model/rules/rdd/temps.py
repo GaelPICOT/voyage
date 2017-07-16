@@ -8,6 +8,10 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 from enum import Enum
+from pint import UnitRegistry
+
+ureg = UnitRegistry()
+ureg.load_definitions('unit_reg.txt')
 
 
 class heures(Enum):
@@ -38,7 +42,7 @@ class tache(object):
         self._difficulte = difficulte
         self._periodicite = periodicite
 
-    def add_sction(self, action):
+    def add_action(self, action):
         """ ajouté une action sur la tache
         """
         self._pt_effectue += action.p_tache

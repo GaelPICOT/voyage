@@ -1,0 +1,2 @@
+heure = 120 * minute = hd
+round = 6 * second = rd = r

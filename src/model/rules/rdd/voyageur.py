@@ -333,7 +333,8 @@ class Personnage(object):
         self._competances = Competances()
         self._fatigue = FatigueCount()
         # points
-        self._points = {}
+        self._points = {"destinée": Compteur(0, 7),
+                        "chance": Compteur(self._carac["Chance"].valeur)}
         # seuils
         self._seuils = {}
         # ajout gestion vie est endurence
@@ -354,6 +355,11 @@ class Personnage(object):
             self._mainhand = "ambidextre"
         else:
             self._mainhand = "droite"
+
+    def calculate_chance(self):
+        """ (re)calculate point de chance
+        """
+        self._points["chance"].vinit = self._carac["Chance"].valeur
 
     def calculate_p_dom(self, _=None):
         """ (re)calculate +dom et encombrement
