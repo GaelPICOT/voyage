@@ -10,6 +10,8 @@
 from enum import Enum
 from pint import UnitRegistry
 import os
+import math
+from builtins import property
 
 
 current_rep = os.path.abspath(os.path.split(__file__)[0])
@@ -35,6 +37,12 @@ class heures(Enum):
     chateau_dormant = 12
 
 
+heures_ordonee = [heures.vaisseau, heures.sirene, heures.faucon,
+                  heures.couronne, heures.dragon, heures.epee, heures.lyre,
+                  heures.serpent, heures.poisson_ac, heures.araigne,
+                  heures.roseau, heures.chateau_dormant]
+
+
 class DateTime(object):
     """ moment precis
     """
@@ -46,10 +54,6 @@ class DateTime(object):
         self._heure = heure
         self._minutes = minutes
         self._annee = annee  # année depuits début 3ième age
-        self._timestamp = self._heure.value * ureg.heure
-        self._timestamp += self._minutes * ureg.minute
-        self._timestamp += self._moi.value * ureg.moi
-        self._timestamp += self._annee * ureg.annee
 
     @property
     def saison(self):
@@ -66,6 +70,56 @@ class DateTime(object):
             return "hiver"
         else:
             raise TypeError("le moi n'est pas exprimer correctement")
+
+    @property
+    def timestamp(self):
+        """ calculate timestamp
+        """
+        timestamp = (self._heure.value-1) * ureg.heure
+        timestamp += self._minutes * ureg.minute
+        timestamp += (self._moi.value-1) * ureg.moi
+        timestamp += self._annee * ureg.annee
+        return timestamp.to("minute").m
+
+    @timestamp.setter
+    def timestamp(self, timestamp):
+        """ set value from a timestamp
+        """
+        tq = timestamp * ureg.minute
+        self._annee = math.floor(tq.to('annee').m)
+        tqh = self._annee * ureg.annee
+        tq -= tqh
+        self._moi = heures_ordonee[math.floor(tq.to('moi').m)]
+        tqm = (self._moi.value-1) * ureg.moi
+        tq -= tqm
+        self._heure = heures_ordonee[math.floor(tq.to('heure').m)]
+        tqh = (self._heure.value-1) * ureg.heure
+        tq -= tqh
+        self._minutes = tq.to('minute').m
+
+    @property
+    def minutes(self):
+        """ nombre de minutes écoulé depuit le début de l'heure
+        """
+        return self._minutes
+
+    @property
+    def heure(self):
+        """ heure en coure
+        """
+        return self._heure
+
+    @property
+    def moi(self):
+        """ moi en cours
+        """
+        return self._moi
+
+    @property
+    def annee(self):
+        """ année en cours
+        """
+        return self._annee
 
 
 class tache(object):
