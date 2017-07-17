@@ -1,2 +1,4 @@
 heure = 120 * minute = hd
 round = 6 * second = rd = r
+moi = 28 * day = md
+annee = 12 * moi = ad

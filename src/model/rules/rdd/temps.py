@@ -9,9 +9,13 @@
 '''
 from enum import Enum
 from pint import UnitRegistry
+import os
+
+
+current_rep = os.path.abspath(os.path.split(__file__)[0])
 
 ureg = UnitRegistry()
-ureg.load_definitions('unit_reg.txt')
+ureg.load_definitions(current_rep + '/unit_reg.txt')
 
 
 class heures(Enum):
@@ -31,6 +35,39 @@ class heures(Enum):
     chateau_dormant = 12
 
 
+class DateTime(object):
+    """ moment precis
+    """
+    def __init__(self, moi=heures.vaisseau, heure=heures.vaisseau, minutes=0,
+                 annee=1000):
+        """ init
+        """
+        self._moi = moi
+        self._heure = heure
+        self._minutes = minutes
+        self._annee = annee  # année depuits début 3ième age
+        self._timestamp = self._heure.value * ureg.heure
+        self._timestamp += self._minutes * ureg.minute
+        self._timestamp += self._moi.value * ureg.moi
+        self._timestamp += self._annee * ureg.annee
+
+    @property
+    def saison(self):
+        """ return season
+        """
+        if self._moi in [heures.vaisseau, heures.sirene, heures.faucon]:
+            return "printemps"
+        elif self._moi in [heures.couronne, heures.dragon, heures.epee]:
+            return "été"
+        elif self._moi in [heures.lyre, heures.serpent, heures.poisson_ac]:
+            return "automne"
+        elif self._moi in [heures.araigne, heures.roseau,
+                           heures.chateau_dormant]:
+            return "hiver"
+        else:
+            raise TypeError("le moi n'est pas exprimer correctement")
+
+
 class tache(object):
     """ action sur la durée
     """
@@ -41,11 +78,14 @@ class tache(object):
         self._pt_effectue = 0
         self._difficulte = difficulte
         self._periodicite = periodicite
+        self._nb_periodes = 0
 
     def add_action(self, action):
         """ ajouté une action sur la tache
         """
-        self._pt_effectue += action.p_tache
+        if not self.finish:
+            self._nb_periodes += 1
+            self._pt_effectue += action.p_tache
 
     @property
     def finish(self):
