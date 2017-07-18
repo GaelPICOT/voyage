@@ -17,7 +17,7 @@ class Action(object):
     """ resultat d'une action
     """
     def __init__(self, personnage, carac=10, competence=0, ajustement=0,
-                 lancer=None, debut=DateTime()):
+                 lancer=None, debut=DateTime(), ignore_etat_g=False):
         """ init
         """
         if isinstance(carac, str):
@@ -34,7 +34,10 @@ class Action(object):
         # competance
         self._carac = carac
         # ajustement
-        self._ajst = ajustement + competence
+        if personnage is not None and not ignore_etat_g:
+            self._ajst = ajustement + competence + personnage.etat_general
+        else:
+            self._ajst = ajustement + competence
         # roll
         self.roll(lancer)
         # time to start
