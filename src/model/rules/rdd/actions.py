@@ -10,21 +10,37 @@ qualités.
 '''
 import math
 import dice
+from model.rules.rdd.temps import DateTime
 
 
 class Action(object):
     """ resultat d'une action
     """
-    def __init__(self, competance=10, ajustement=0, lancer=None):
+    def __init__(self, personnage, carac=10, competence=0, ajustement=0,
+                 lancer=None, debut=DateTime()):
         """ init
         """
+        if isinstance(carac, str):
+            self._carac_name = carac
+            carac = personnage.caracteristiques[carac].valeur
+        else:
+            self._carac_name = ""
+        if isinstance(competence, str):
+            self._cmp_name = competence
+            carac = personnage.competances[competence].valeur
+        else:
+            self._cmp_name = ""
         self._pc_reussit = 0
         # competance
-        self._cmp = competance
+        self._carac = carac
         # ajustement
-        self._ajst = ajustement
+        self._ajst = ajustement + competence
         # roll
         self.roll(lancer)
+        # time to start
+        self._debut = debut
+        # save the personnage
+        self._personnage = personnage
 
     def roll(self, lancer=None):
         """ roll dice again
@@ -34,9 +50,9 @@ class Action(object):
         else:
             self._lancer = lancer
         if self._ajst >= -8:
-            self._pc_reussit = (self._cmp * (self._ajst + 10)) // 2
+            self._pc_reussit = (self._carac * (self._ajst + 10)) // 2
         elif self._ajst >= -10:
-            self._pc_reussit = self._cmp // (self._ajst * 2)
+            self._pc_reussit = self._carac // (self._ajst * 2)
         elif self._ajst > -17:
             self._pc_reussit = 1
         else:
@@ -72,6 +88,18 @@ class Action(object):
                 self._e_tot = self._lancer >= 2
             else:
                 self._e_tot = self._lancer >= 1
+
+    @property
+    def carac_name(self):
+        """ carcteristique name
+        """
+        return self._carac_name
+
+    @property
+    def cmp_name(self):
+        """ competence name
+        """
+        return self._cmp_name
 
     @property
     def p_qualite(self):
@@ -142,3 +170,9 @@ class Action(object):
         """ property pour accédé à à l'échec total de l'action
         """
         return self._e_tot
+
+    @property
+    def debut(self):
+        """ return début de l'action
+        """
+        return self._debut

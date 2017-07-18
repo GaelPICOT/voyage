@@ -125,21 +125,22 @@ class DateTime(object):
 class tache(object):
     """ action sur la durée
     """
-    def __init__(self, pt_tache, difficulte, periodicite):
+    def __init__(self, pt_tache, difficulte, periodicite=ureg.minute):
         """ initialisation
         """
         self._pt_tache = pt_tache
         self._pt_effectue = 0
         self._difficulte = difficulte
         self._periodicite = periodicite
-        self._nb_periodes = 0
+        self._fin = None
 
     def add_action(self, action):
         """ ajouté une action sur la tache
         """
         if not self.finish:
-            self._nb_periodes += 1
             self._pt_effectue += action.p_tache
+            if self.finish:
+                self._fin = action.debut + self._periodicite
 
     @property
     def finish(self):
