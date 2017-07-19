@@ -8,9 +8,9 @@
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
 import dice
-import model.rules.rdd.temps
 import math
 from model.rules.rdd.competance import Caracteristiques, Competances
+from model.rules.rdd.temps import DateTime, ureg, heures
 
 
 class ConteurLimiteError(Exception):
@@ -226,9 +226,9 @@ class SignesParticuliers(object):
         """
         self._nom = ""
         self._sexe = "Femme"  # peut être multiple en fonction de la race
-        self._HN = model.rules.rdd.temps.heures.vaisseau  # heure de naissance
+        self._HN = heures.vaisseau  # heure de naissance
         self._beaute = 10  # beauté
-        self._age = 18
+        self._age_debut = 18
         self._taille = 1.7  # en m
         self._poids = 70  # en kG
         self._cheveux = Cheveux()
@@ -325,6 +325,24 @@ class Compteur(object):
             raise ConteurLimiteError(0-self._valeur, info="limite negative")
 
 
+class evenement(object):
+    """ un événement dans la vie du personnage
+    """
+    def __init__(self, personnage=None, duree=ureg.heure):
+        """ init
+        """
+        self._personnage = personnage
+        self._duree = duree
+        if personnage is not None:
+            personnage.add_event(self)
+
+    @property
+    def duree(self):
+        """ durée de l'événement
+        """
+        return self._duree
+
+
 class Personnage(object):
     """ objet permétant de créé un personnage.
     """
@@ -351,10 +369,12 @@ class Personnage(object):
         self.calculate_p_dom()
         # signe particulier
         self._signes_particuliers = SignesParticuliers()
+        self._list_event = []
         if dice.roll("1d12").pop() == 1:
             self._mainhand = "ambidextre"
         else:
             self._mainhand = "droite"
+        self._time = DateTime()
 
     def calculate_chance(self):
         """ (re)calculate point de chance
@@ -447,6 +467,19 @@ class Personnage(object):
         """
         self._competances = Competances()
         self._signes_particuliers = SignesParticuliers()
+        self._list_event.append("mort")
+
+    def add_event(self, event):
+        """ ajouté un evenement dans la liste d'événement
+        """
+        self._list_event.append(event)
+        self._time += event.duree
+
+    @property
+    def time(self):
+        """ current timestemp du personnage
+        """
+        return self._time
 
     @property
     def points(self):

@@ -121,6 +121,11 @@ class DateTime(object):
         """
         return self._annee
 
+    def __iadd__(self, duree):
+        """ += with quantity
+        """
+        self.timestamp = self.timestamp + math.ceil(duree.to("minute").m)
+
 
 class tache(object):
     """ action sur la durée

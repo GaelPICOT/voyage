@@ -10,14 +10,15 @@ qualités.
 '''
 import math
 import dice
-from model.rules.rdd.temps import DateTime
+from model.rules.rdd.temps import DateTime, ureg
 
 
 class Action(object):
     """ resultat d'une action
     """
     def __init__(self, personnage, carac=10, competence=0, ajustement=0,
-                 lancer=None, debut=DateTime(), ignore_etat_g=False):
+                 lancer=None, debut=DateTime(), duree=1*ureg.minute,
+                 ignore_etat_g=False):
         """ init
         """
         if isinstance(carac, str):
@@ -42,8 +43,12 @@ class Action(object):
         self.roll(lancer)
         # time to start
         self._debut = debut
+        # durée de l'action
+        self._duree = duree
         # save the personnage
         self._personnage = personnage
+        if personnage is not None:
+            personnage.add_event(self)
 
     def roll(self, lancer=None):
         """ roll dice again
@@ -91,6 +96,12 @@ class Action(object):
                 self._e_tot = self._lancer >= 2
             else:
                 self._e_tot = self._lancer >= 1
+
+    @property
+    def duree(self):
+        """ durée de l'action
+        """
+        return self._duree
 
     @property
     def carac_name(self):
