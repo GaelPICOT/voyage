@@ -115,6 +115,9 @@ class FatigueCount(object):
         self._seg_lineaire = self._segments[0] + self._segments[-1]
         for i in range(6):
             self._seg_lineaire.append(self._segments[-2-i])
+        # limite à la récupération de point de fatigue (ex : point d'endurence
+        # manquant)
+        self._limite_recuperation = 0
 
     @property
     def segments(self):
@@ -571,3 +574,5 @@ class VoyageurCreateur(object):
         self._competances_point = 3000
         # creation personnage
         self._personnage = Personnage()
+        # somme de départ en deniers
+        self._somme_depart = 5000
