@@ -343,6 +343,26 @@ class evenement(object):
         return self._duree
 
 
+class VraiRevant(object):
+    """ ajout info vrai revant : competances de vocation
+    """
+    def __init__(self):
+        """ init
+        """
+        self._vocation = []
+
+    def ajoute_cmp_vocation(self, cmp: str):
+        """ ajoute une compétence de vocation
+        """
+        self._vocation.append(cmp)
+
+    @property
+    def vocation(self):
+        """ compétance de vocation
+        """
+        return self._vocation
+
+
 class Personnage(object):
     """ objet permétant de créé un personnage.
     """
@@ -375,6 +395,7 @@ class Personnage(object):
         else:
             self._mainhand = "droite"
         self._time = DateTime()
+        self._statu_revant = VraiRevant()
 
     def calculate_chance(self):
         """ (re)calculate point de chance
@@ -476,6 +497,18 @@ class Personnage(object):
         self._time += event.duree
 
     @property
+    def statut_revant(self):
+        """ statu : vrais ou haut rêvant
+        """
+        return self._statu_revant
+
+    @statut_revant.setter
+    def statut_revant(self, valeur):
+        """ set statut rêvant
+        """
+        self._statu_revant = valeur
+
+    @property
     def time(self):
         """ current timestemp du personnage
         """
@@ -524,3 +557,17 @@ class Personnage(object):
         malus_fatigue = self._fatigue.malus
         pv_manquant = self._points["Vie"].vinit - self._points["Vie"].valeur
         return malus_fatigue - pv_manquant
+
+
+class VoyageurCreateur(object):
+    """ permet la cration de voyageur
+    """
+    def __init__(self):
+        """ init
+        """
+        # 160 point - 140 aloué par default
+        self._categories_point = 20
+        # 3000 point pour les compétances
+        self._competances_point = 3000
+        # creation personnage
+        self._personnage = Personnage()
