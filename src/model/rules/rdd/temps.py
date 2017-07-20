@@ -11,7 +11,6 @@ from enum import Enum
 from pint import UnitRegistry
 import os
 import math
-from builtins import property
 
 
 current_rep = os.path.abspath(os.path.split(__file__)[0])
