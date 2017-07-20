@@ -65,7 +65,8 @@ class OptionEvolutive(object):
     """ représente tout option pouvant évoluer avec l'expertience
     """
 
-    def __init__(self, name, valeur=10, max_=None, experience=None):
+    def __init__(self, name, valeur: int=10, max_: int=None,
+                 experience: Experience=None):
         """ initialization
         """
         self.value_changed = obs.Observable()
@@ -170,7 +171,7 @@ class Caracteristiques(object):
         """ slot pour changement de caractéristique.
         """
         if name == "Taille":
-            self._tab["Force"].max = self._tab["Taille"] + 4
+            self._tab["Force"].max = self._tab["Taille"].valeur + 4
 
     def __getitem__(self, key):
         if key == "Mêlée":
@@ -193,7 +194,7 @@ class Competance(OptionEvolutive):
 
     xp_tab = XpTab(base_tab, lambda x: 100)
 
-    def __init__(self, name, valeur=0, max_=None, experience=None):
+    def __init__(self, name: str, valeur: int=0, max_=None, experience=None):
         """ initialisation
         """
         OptionEvolutive.__init__(self, name, valeur, max_, experience)
