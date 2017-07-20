@@ -33,12 +33,11 @@ class CaseTMR(object):
         lac = 12
         marais = 13
 
-    def __init__(self, coord_x, coord_y: int, categorie: CaseTMR.Categorie,
-                 nom: str):
+    def __init__(self, coord_x, coord_y: int, categorie, nom: str):
         """ init
         """
-        if type(coord_x) is int:
-            coord_x = CaseTMR.default_notationX[coord_x]
+        if type(coord_x) is not int:
+            coord_x = CaseTMR.default_notationX.index(coord_x.upper())+1
         self._coord_x = coord_x
         self._coord_y = coord_y
         self._categorie = categorie
