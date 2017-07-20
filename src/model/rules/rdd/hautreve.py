@@ -13,6 +13,10 @@ from enum import Enum
 class CaseTMR(object):
     """ représente une case en TMR
     """
+
+    default_notationX = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                         'K', 'L', 'M']
+
     class Categorie(Enum):
         cite = 0
         coline = 1
@@ -29,9 +33,22 @@ class CaseTMR(object):
         lac = 12
         marais = 13
 
-    def __init__(self):
+    def __init__(self, coord_x, coord_y: int, categorie: CaseTMR.Categorie,
+                 nom: str):
         """ init
         """
+        if type(coord_x) is int:
+            coord_x = CaseTMR.default_notationX[coord_x]
+        self._coord_x = coord_x
+        self._coord_y = coord_y
+        self._categorie = categorie
+        self._nom = nom
+
+    @property
+    def nom(self) -> str:
+        """ retourne le noù
+        """
+        return self._nom
 
 
 class TMR(object):

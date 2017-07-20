@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ''' module desiné à la gestion du TMR par default.
+A était créé à partir de https://github.com/Cyol/rdd/blob/master/js/tmr.js
 
     :platform: Unix, Windows
     :synopsis: gestion du haut-rêve
@@ -198,5 +199,4 @@ default_TMR = (("A", 1, CaseTMR.Categorie.cite, "VIDE"),
                ("M", 12, CaseTMR.Categorie.coline, "RÉVULSANTES"),
                ("M", 13, CaseTMR.Categorie.plaine, "d'ANJOU"),
                ("M", 14, CaseTMR.Categorie.desolation, "d'APRÈS"),
-               ("M", 15, CaseTMR.Categorie.cite, "de KLANA"),
-               )
+               ("M", 15, CaseTMR.Categorie.cite, "de KLANA"))
