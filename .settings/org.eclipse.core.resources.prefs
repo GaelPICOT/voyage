@@ -15,4 +15,5 @@ encoding//src/model/rules/rdd/temps.py=utf-8
 encoding//src/model/rules/rdd/voyageur.py=utf-8
 encoding//src/test/rdd/action.py=utf-8
 encoding//src/test/rdd/voyageur.py=utf-8
+encoding//src/view/listperso.py=utf-8
 encoding//src/view/mainwindow.py=utf-8

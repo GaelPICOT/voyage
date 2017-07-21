@@ -18,7 +18,7 @@
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -40,14 +40,14 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="personnages_button">
           <property name="text">
            <string>Personnages</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="pnj_button">
           <property name="text">
            <string>PNJ</string>
           </property>
@@ -85,6 +85,12 @@
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <widget class="QWidget" name="general_tab">
        <attribute name="title">
         <string>general</string>
@@ -152,35 +158,35 @@
     <property name="title">
      <string>Fichier</string>
     </property>
-    <addaction name="actionOuvrir_base_de_donn_e"/>
-    <addaction name="actionEnregistr_e_base_de_donn_es"/>
+    <addaction name="ouvrir_db_action"/>
+    <addaction name="enregistrer_db_action"/>
    </widget>
    <widget class="QMenu" name="menuOnglet">
     <property name="title">
      <string>Onglet</string>
     </property>
-    <addaction name="actionFermer_Onglet_Courrent"/>
-    <addaction name="actionOuvrir_Nouvel_Onglet"/>
+    <addaction name="fermer_onglet_action"/>
+    <addaction name="ouvrir_onglet_action"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuOnglet"/>
   </widget>
-  <action name="actionOuvrir_base_de_donn_e">
+  <action name="ouvrir_db_action">
    <property name="text">
     <string>Ouvrir base de données</string>
    </property>
   </action>
-  <action name="actionEnregistr_e_base_de_donn_es">
+  <action name="enregistrer_db_action">
    <property name="text">
     <string>Enregistrée base de données</string>
    </property>
   </action>
-  <action name="actionFermer_Onglet_Courrent">
+  <action name="fermer_onglet_action">
    <property name="text">
     <string>Fermer Onglet Courrent</string>
    </property>
   </action>
-  <action name="actionOuvrir_Nouvel_Onglet">
+  <action name="ouvrir_onglet_action">
    <property name="text">
     <string>Ouvrir Nouvel Onglet</string>
    </property>
