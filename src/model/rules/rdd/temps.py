@@ -16,7 +16,7 @@ import math
 current_rep = os.path.abspath(os.path.split(__file__)[0])
 
 ureg = UnitRegistry()
-ureg.load_definitions(current_rep + '/unit_reg.txt')
+ureg.load_definitions(os.path.join(current_rep, 'unit_reg.txt'))
 
 
 class heures(Enum):
