@@ -7,7 +7,7 @@
 
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMdiArea
 from PyQt5.uic import loadUi
 from view.listperso import ListPerso
 import os
@@ -27,5 +27,8 @@ class MainWindow(QMainWindow):
     def ouvrir_list_perso(self):
         """ ouvre la list de personnage
         """
+        name_mdi = self.tabWidget.currentWidget().objectName()[:-4] + "_mdi"
+        mdi_area = self.findChild(QMdiArea, name_mdi)
         self._new_list_perso = ListPerso()
+        mdi_area.addSubWindow(self._new_list_perso)
         self._new_list_perso.show()
