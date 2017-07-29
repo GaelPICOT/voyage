@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>813</width>
+    <width>1202</width>
     <height>600</height>
    </rect>
   </property>
@@ -26,19 +26,34 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page">
+      <widget class="QWidget" name="db_page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>498</height>
+         <width>108</width>
+         <height>493</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 1</string>
+        <string>données</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QPushButton" name="personnages_button">
           <property name="text">
@@ -68,18 +83,40 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="aventure_page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>68</width>
-         <height>498</height>
+         <width>103</width>
+         <height>493</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 2</string>
+        <string>aventure</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QPushButton" name="lieu_button">
+          <property name="text">
+           <string>lieu</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -150,8 +187,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>813</width>
-     <height>22</height>
+     <width>1202</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
