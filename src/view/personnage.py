@@ -15,9 +15,10 @@ import os
 class PersonnageWindow(QWidget):
     """ fenetre principale
     """
-    def __init__(self):
+    def __init__(self, parent=None, mdi_area=None):
         """ init
         """
-        QWidget.__init__(self)
+        QWidget.__init__(self, parent)
         current_rep = os.path.abspath(os.path.split(__file__)[0])
         loadUi(os.path.join(current_rep, "personnage.ui"), self)
+        self._mdi_area = mdi_area

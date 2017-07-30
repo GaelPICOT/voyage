@@ -23,12 +23,14 @@ class MainWindow(QMainWindow):
         current_rep = os.path.abspath(os.path.split(__file__)[0])
         loadUi(os.path.join(current_rep, "mainwindow.ui"), self)
         self.personnages_button.clicked.connect(self.ouvrir_list_perso)
+        self._list_sub_windows = []
 
     def ouvrir_list_perso(self):
         """ ouvre la list de personnage
         """
         name_mdi = self.tabWidget.currentWidget().objectName()[:-4] + "_mdi"
         mdi_area = self.findChild(QMdiArea, name_mdi)
-        self._new_list_perso = ListPerso()
-        mdi_area.addSubWindow(self._new_list_perso)
-        self._new_list_perso.show()
+        new_list_perso = ListPerso(mdi_area=mdi_area)
+        mdi_area.addSubWindow(new_list_perso)
+        new_list_perso.show()
+        self._list_sub_windows.append(new_list_perso)

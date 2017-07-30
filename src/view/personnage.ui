@@ -689,7 +689,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
+                <item row="2" column="0">
                  <widget class="QPushButton" name="validation_button">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -706,6 +706,26 @@
                  <widget class="QSpinBox" name="carac_spin">
                   <property name="value">
                    <number>20</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_25">
+                  <property name="text">
+                   <string>Type de rêvant</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="revant_label">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel {color : green; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Vrai-rêvant</string>
                   </property>
                  </widget>
                 </item>
