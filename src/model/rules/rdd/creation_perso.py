@@ -17,9 +17,14 @@ class PersonnageCreateur(object):
         """ init
         """
         self._personnage_courrant = Personnage()
+        # point de carctéristique restant
         self._point_carac = 20
+        # point d'expérience pour compétence restant
         self._point_comp = 3000
+        # point de sort utilisé
         self._point_sort = 0
+        # argent de départ en denier
+        self._agent = 5000
 
     @property
     def personnage(self):
