@@ -8,7 +8,48 @@ A était créé à partir de https://github.com/Cyol/rdd/blob/master/js/tmr.js
 
 .. moduleauthor:: Gaël PICOT <gael.picot@free.fr>
 '''
-from model.rules.rdd.hautreve import CaseTMR
+from enum import Enum
+
+
+class CaseTMR(object):
+    """ représente une case en TMR
+    """
+
+    default_notationX = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                         'K', 'L', 'M']
+
+    class Categorie(Enum):
+        cite = 0
+        coline = 1
+        desert = 2
+        desolation = 3
+        foret = 4
+        gouffre = 5
+        monts = 6
+        necropole = 7
+        plaine = 8
+        pont = 9
+        sanctuaire = 10
+        fleuve = 11
+        lac = 12
+        marais = 13
+
+    def __init__(self, coord_x, coord_y: int, categorie, nom: str):
+        """ init
+        """
+        if type(coord_x) is not int:
+            coord_x = CaseTMR.default_notationX.index(coord_x.upper())+1
+        self._coord_x = coord_x
+        self._coord_y = coord_y
+        self._categorie = categorie
+        self._nom = nom
+        self._reserve = {"Oniros": [], "Hypnos": [], "Narcos": [], "Thanatos": []}
+
+    @property
+    def nom(self) -> str:
+        """ retourne le noù
+        """
+        return self._nom
 
 
 default_TMR = (("A", 1, CaseTMR.Categorie.cite, "VIDE"),
@@ -200,3 +241,8 @@ default_TMR = (("A", 1, CaseTMR.Categorie.cite, "VIDE"),
                ("M", 13, CaseTMR.Categorie.plaine, "d'ANJOU"),
                ("M", 14, CaseTMR.Categorie.desolation, "d'APRÈS"),
                ("M", 15, CaseTMR.Categorie.cite, "de KLANA"))
+
+
+class TMR(object):
+    """ Represente les TMR pour une personne
+    """

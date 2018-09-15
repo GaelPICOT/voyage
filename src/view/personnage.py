@@ -25,6 +25,9 @@ class PersonnageWindow(QWidget):
                 self._personnage_createur = PersonnageCreateur()
             else:
                 self._personnage_createur = perso_creat
+            self._personnage = self._personnage_createur.personnage
+        else:
+            self._personnage = personnage
         QWidget.__init__(self, parent)
         current_rep = os.path.abspath(os.path.split(__file__)[0])
         loadUi(os.path.join(current_rep, "personnage.ui"), self)

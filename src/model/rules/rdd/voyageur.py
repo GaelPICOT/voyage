@@ -328,24 +328,6 @@ class Compteur(object):
             raise ConteurLimiteError(0-self._valeur, info="limite negative")
 
 
-class evenement(object):
-    """ un événement dans la vie du personnage
-    """
-    def __init__(self, personnage=None, duree=ureg.heure):
-        """ init
-        """
-        self._personnage = personnage
-        self._duree = duree
-        if personnage is not None:
-            personnage.add_event(self)
-
-    @property
-    def duree(self):
-        """ durée de l'événement
-        """
-        return self._duree
-
-
 class VraiRevant(object):
     """ ajout info vrai revant : competances de vocation
     """
@@ -560,19 +542,3 @@ class Personnage(object):
         malus_fatigue = self._fatigue.malus
         pv_manquant = self._points["Vie"].vinit - self._points["Vie"].valeur
         return malus_fatigue - pv_manquant
-
-
-class VoyageurCreateur(object):
-    """ permet la cration de voyageur
-    """
-    def __init__(self):
-        """ init
-        """
-        # 160 point - 140 aloué par default
-        self._categories_point = 20
-        # 3000 point pour les compétances
-        self._competances_point = 3000
-        # creation personnage
-        self._personnage = Personnage()
-        # somme de départ en deniers
-        self._somme_depart = 5000

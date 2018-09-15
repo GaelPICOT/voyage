@@ -157,3 +157,21 @@ class tache(object):
     @property
     def difficulte(self):
         return self._difficulte
+
+
+class Evenement(object):
+    """ un événement dans la vie du personnage
+    """
+    def __init__(self, personnage=None, duree=ureg.heure):
+        """ init
+        """
+        self._personnage = personnage
+        self._duree = duree
+        if personnage is not None:
+            personnage.add_event(self)
+
+    @property
+    def duree(self):
+        """ durée de l'événement
+        """
+        return self._duree
