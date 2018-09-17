@@ -185,6 +185,19 @@ class Caracteristiques(object):
         else:
             return self._tab[key]
 
+    @property
+    def data_dict(self):
+        data = {}
+        for name, caracteristique in self._tab.items():
+            data[name] = [caracteristique.valeur, caracteristique.exp]
+        return data
+
+    @data_dict.setter
+    def data_dict(self, value):
+        for name, caracteristique in value.items():
+            self._tab[name].valeur = caracteristique[0]
+            self._tab[name].exp = caracteristique[1]
+
 
 class Competance(OptionEvolutive):
 

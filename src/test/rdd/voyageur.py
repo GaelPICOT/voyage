@@ -47,8 +47,8 @@ class TestCaracteristique(unittest.TestCase):
 
     def test_caracteristiques(self):
         carac = model.rules.rdd.competance.Caracteristiques()
-        carac["Rêve"].valeur = 15
-        self.assertEqual(int(carac["Rêve"]), 15)
+        carac["Reve"].valeur = 15
+        self.assertEqual(int(carac["Reve"]), 15)
         carac["Taille"].valeur = 15
         self.assertEqual(int(carac["Taille"]), 15)
         carac["Force"].exp += 10
@@ -72,9 +72,9 @@ class TestCaracteristique(unittest.TestCase):
 
     def test_voyageur(self):
         voy = model.rules.rdd.voyageur.Personnage()
-        voy.caracteristiques["Rêve"].valeur = 15
-        self.assertEqual(int(voy.caracteristiques["Rêve"]), 15)
-        self.assertEqual(voy.points["Rêve"], 15)
+        voy.caracteristiques["Reve"].valeur = 15
+        self.assertEqual(int(voy.caracteristiques["Reve"]), 15)
+        self.assertEqual(voy.points["Reve"], 15)
         self.assertEqual(int(voy.competances["Bricollage"]), -4)
         voy.competances["Bricollage"] += 1
         self.assertEqual(int(voy.competances["Bricollage"]), -3)

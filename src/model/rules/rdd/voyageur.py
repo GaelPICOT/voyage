@@ -10,7 +10,7 @@
 import dice
 import math
 from model.rules.rdd.competance import Caracteristiques, Competances
-from model.rules.rdd.temps import DateTime, ureg, heures
+from model.rules.rdd.temps import DateTime, heures
 
 
 class ConteurLimiteError(Exception):
@@ -237,6 +237,14 @@ class SignesParticuliers(object):
         self._cheveux = Cheveux()
         self._yeux = "vert"
         self._autres = ""
+
+    @property
+    def nom(self):
+        return self._nom
+
+    @nom.setter
+    def nom(self, nom):
+        self._nom = nom
 
 
 class Compteur(object):
@@ -542,3 +550,17 @@ class Personnage(object):
         malus_fatigue = self._fatigue.malus
         pv_manquant = self._points["Vie"].vinit - self._points["Vie"].valeur
         return malus_fatigue - pv_manquant
+
+    @property
+    def signes_particuliers(self):
+        return self._signes_particuliers
+
+    @property
+    def data_dict(self):
+        data = {"caracteristique": self._carac.data_dict}            
+        return data
+
+    @data_dict.setter
+    def data_dict(self, value):
+        """ load data from dictionnary
+        """
