@@ -356,17 +356,17 @@ class Personnage(object):
         self._competances = Competances()
         self._fatigue = FatigueCount()
         # points
-        self._points = {"destinée": Compteur(0, 7),
+        self._points = {"destinee": Compteur(0, 7),
                         "chance": Compteur(self._carac["Chance"].valeur)}
         # seuils
         self._seuils = {}
         # ajout gestion vie est endurence
         self._carac["Taille"].value_changed.connect(self.calculate_vie)
         self._carac["Constitution"].value_changed.connect(self.calculate_vie)
-        self._carac["Volonté"].value_changed.connect(self.calculate_vie)
+        self._carac["Volonte"].value_changed.connect(self.calculate_vie)
         self.calculate_vie()
         # ajout gestion rêve
-        self._carac["Rêve"].value_changed.connect(self.calculate_reve)
+        self._carac["Reve"].value_changed.connect(self.calculate_reve)
         self.calculate_reve()
         # + dom et enc
         self._carac["Taille"].value_changed.connect(self.calculate_p_dom)
@@ -410,14 +410,14 @@ class Personnage(object):
         """
         if "Rêve" not in self._points.keys():
             # points de rêve
-            self._points["Rêve"] = self._carac["Rêve"].valeur
+            self._points["Reve"] = self._carac["Reve"].valeur
             # seuil de rêve
-            self._seuils["Rêve"] = self._points["Rêve"]
+            self._seuils["Reve"] = self._points["Reve"]
         else:
-            if self._points["Rêve"] < self._carac["Rêve"].valeur:
-                self._points["Rêve"] = self._carac["Rêve"].valeur
-            if self._seuils["Rêve"] < self._carac["Rêve"].valeur:
-                self._seuils["Rêve"] = self._carac["Rêve"].valeur
+            if self._points["Reve"] < self._carac["Reve"].valeur:
+                self._points["Reve"] = self._carac["Reve"].valeur
+            if self._seuils["Reve"] < self._carac["Reve"].valeur:
+                self._seuils["Reve"] = self._carac["Reve"].valeur
 
     def calculate_vie(self, _=None):
         """ (re)calcule la vie et la constitution et les seuilles en lien
@@ -432,7 +432,7 @@ class Personnage(object):
         else:
             self._points["Vie"].vinit = math.ceil(end1 / 2)
         # points d'endurence
-        end2 = self._points["Vie"].valeur + self._carac["Volonté"].valeur
+        end2 = self._points["Vie"].valeur + self._carac["Volonte"].valeur
         if end2 >= end1:
             end = end2
         else:
@@ -465,8 +465,8 @@ class Personnage(object):
     def passe_chateau_dormant(self):
         """ passage de chateau dormant
         """
-        if self._points["Rêve"] > self._seuils["Rêve"]:
-            self._points["Rêve"] -= 1
+        if self._points["Reve"] > self._seuils["Reve"]:
+            self._points["Reve"] -= 1
 
     def mort(self):
         """ tue le personnage

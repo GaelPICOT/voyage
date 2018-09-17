@@ -154,16 +154,16 @@ class Caracteristiques(object):
                      "Apparence": Caracteristique("Apparence"),
                      "Constitution": Caracteristique("Constitution", 10, 20),
                      "Force": Caracteristique("Force", 10, 14),
-                     "Agilité": Caracteristique("Agilité", 10, 20),
-                     "Dextérité": Caracteristique("Dextérité", 10, 20),
+                     "Agilite": Caracteristique("Agilité", 10, 20),
+                     "Dexterite": Caracteristique("Dextérité", 10, 20),
                      "Perception": Caracteristique("Perception", 10, 20),
                      "Vue": Caracteristique("Vue", 10, 20),
-                     "Ouïe": Caracteristique("Ouïe", 10, 20),
-                     "Odorat-Gout": Caracteristique("Odorat-Gout", 10, 20),
-                     "Volonté": Caracteristique("Volonté"),
-                     "Itellect": Caracteristique("Itellect"),
+                     "Ouie": Caracteristique("Ouïe", 10, 20),
+                     "Odorat_gout": Caracteristique("Odorat-Gout", 10, 20),
+                     "Volonte": Caracteristique("Volonté"),
+                     "Intellect": Caracteristique("Intellect"),
                      "Empathie": Caracteristique("Empathie"),
-                     "Rêve": Caracteristique("Rêve"),
+                     "Reve": Caracteristique("Rêve"),
                      "Chance": Caracteristique("Chance")}
         self._tab["Taille"].value_changed.connect(self.caracteristique_changed)
 
@@ -174,14 +174,14 @@ class Caracteristiques(object):
             self._tab["Force"].max = self._tab["Taille"].valeur + 4
 
     def __getitem__(self, key):
-        if key == "Mêlée":
-            return (int(self["Force"]) + int(self["Agilité"])) // 2
+        if key == "Melee":
+            return (int(self["Force"]) + int(self["Agilite"])) // 2
         elif key == "Tir":
-            return (int(self["Vue"]) + int(self["Dextérité"])) // 2
+            return (int(self["Vue"]) + int(self["Dexterite"])) // 2
         elif key == "Lancer":
             return (int(self["Tir"]) + int(self["Force"])) // 2
-        elif key == "Dérobée":
-            return (int(self["Agilité"]) + (21 - int(self["Taille"]))) // 2
+        elif key == "Derobee":
+            return (int(self["Agilite"]) + (21 - int(self["Taille"]))) // 2
         else:
             return self._tab[key]
 
