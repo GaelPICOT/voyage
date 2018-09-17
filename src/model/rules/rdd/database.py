@@ -33,6 +33,7 @@ class Database(object):
         """ save database to file
         """
         with open(file_name, 'w') as f:
+            print(self.data_dict)
             json.dump(self.data_dict, f)
 
     def load_from_file(self, file_name):
@@ -50,6 +51,7 @@ class Database(object):
         data["personnages"] = {}
         for name, personnage in self._personnages.items():
             data["personnages"][name] = personnage.data_dict
+        return data
 
     @data_dict.setter
     def data_dict(self, value):

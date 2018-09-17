@@ -41,6 +41,14 @@ class Experience(object):
     def valeur(self):
         self._valeur
 
+    @property
+    def data_dict(self):
+        return {"valeur": self._valeur}
+
+    @data_dict.setter
+    def data_dict(self, value):
+        self._valeur = value["valeur"]
+
 
 class XpTab(object):
     """ list de valeur pour l'augmentation par l'expérience
@@ -124,6 +132,15 @@ class OptionEvolutive(object):
     def exp(self, exp):
         self._exp = exp
 
+    @property
+    def data_dict(self):
+        return {"valeur" : self._valeur, "exp": self._exp.data_dict}
+
+    @data_dict.setter
+    def data_dict(self, value):
+        self._valeur = value["valeur"]
+        self._exp.data_dict = value["exp"]
+
 
 class Caracteristique(OptionEvolutive):
     """ représente une caracteristique
@@ -189,7 +206,7 @@ class Caracteristiques(object):
     def data_dict(self):
         data = {}
         for name, caracteristique in self._tab.items():
-            data[name] = [caracteristique.valeur, caracteristique.exp]
+            data[name] = caracteristique.data_dict
         return data
 
     @data_dict.setter

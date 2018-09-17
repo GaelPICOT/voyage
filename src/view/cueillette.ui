@@ -362,6 +362,21 @@
       <string>Chance et algorythmes</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QWidget" name="widget_10" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -382,6 +397,12 @@
          </property>
          <item>
           <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Chance</string>
            </property>
@@ -389,6 +410,43 @@
          </item>
          <item>
           <widget class="QSpinBox" name="chanc_spin"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_11" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Algorythme</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="algo_combo"/>
          </item>
         </layout>
        </widget>
@@ -410,7 +468,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>148</height>
+          <height>141</height>
          </size>
         </property>
        </spacer>
