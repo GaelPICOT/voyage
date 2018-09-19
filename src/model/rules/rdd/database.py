@@ -33,7 +33,6 @@ class Database(object):
         """ save database to file
         """
         with open(file_name, 'w') as f:
-            print(self.data_dict)
             json.dump(self.data_dict, f)
 
     def load_from_file(self, file_name):

@@ -564,3 +564,4 @@ class Personnage(object):
     def data_dict(self, value):
         """ load data from dictionnary
         """
+        self._carac.data_dict = value["caracteristique"]
