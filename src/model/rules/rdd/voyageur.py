@@ -336,26 +336,6 @@ class Compteur(object):
             raise ConteurLimiteError(0-self._valeur, info="limite negative")
 
 
-class VraiRevant(object):
-    """ ajout info vrai revant : competances de vocation
-    """
-    def __init__(self):
-        """ init
-        """
-        self._vocation = []
-
-    def ajoute_cmp_vocation(self, cmp: str):
-        """ ajoute une compétence de vocation
-        """
-        self._vocation.append(cmp)
-
-    @property
-    def vocation(self):
-        """ compétance de vocation
-        """
-        return self._vocation
-
-
 class Personnage(object):
     """ objet permétant de créé un personnage.
     """
@@ -388,7 +368,7 @@ class Personnage(object):
         else:
             self._mainhand = "droite"
         self._time = DateTime()
-        self._statu_revant = VraiRevant()
+        self._haut_revant = False
 
     def calculate_chance(self):
         """ (re)calculate point de chance
@@ -508,16 +488,16 @@ class Personnage(object):
         self._time += event.duree
 
     @property
-    def statut_revant(self):
+    def haut_revant(self):
         """ statu : vrais ou haut rêvant
         """
-        return self._statu_revant
+        return self._haut_revant
 
-    @statut_revant.setter
-    def statut_revant(self, valeur):
+    @haut_revant.setter
+    def haut_revant(self, valeur):
         """ set statut rêvant
         """
-        self._statu_revant = valeur
+        self._haut_revant = valeur
 
     @property
     def time(self):

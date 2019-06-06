@@ -70,4 +70,11 @@ class PersonnageWindow(QWidget):
     def change_reve_statu(self):
         """ change haut revant en vrai revant et inversement
         """
-        self.revant_button.setStyleSheet("QPushButton {color : blue; }")
+        if self.revant_button.text() != "Haut-rêvant":
+            self.revant_button.setStyleSheet("QPushButton {color : blue; }")
+            self.revant_button.setText("Haut-rêvant")
+            self._personnage.haut_revant = True
+        else:
+            self.revant_button.setStyleSheet("QPushButton {color : green; }")
+            self.revant_button.setText("Vrai-rêvant")
+            self._personnage.haut_revant = False
