@@ -43,10 +43,12 @@ class PersonnageWindow(QWidget):
 
     def changed_carac_creator(self, caract, spin):
         #TODO: corect changement de taille inférieur à 4+Force n'influ pas sur la force
-        #TODO: corect use more than 20 point without blocking!
         caract = caract[0].upper() + caract[1:]
         def changed_carac(value):
             old_value = self._personnage.caracteristiques[caract].valeur
+            if self.carac_spin.value() == 0 and old_value < value:
+                spin.setValue(old_value)
+                return
             self._personnage.caracteristiques[caract].valeur = value
             if self._personnage.caracteristiques[caract].valeur == value:
                 if value > old_value:

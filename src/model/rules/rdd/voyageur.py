@@ -42,7 +42,7 @@ class ConteurLimiteError(Exception):
         return self._info
 
 
-class FatigueSegmet(object):
+class FatigueSegment(object):
     """ modelise un segment de fatique
     """
     def __init__(self, size):
@@ -100,16 +100,16 @@ class FatigueCount(object):
     def __init__(self):
         """ initialisation
         """
-        self._segments = {0: [FatigueSegmet(2), FatigueSegmet(3),
-                              FatigueSegmet(3)],
-                          -1: [FatigueSegmet(2), FatigueSegmet(3),
-                               FatigueSegmet(3)],
-                          -2: FatigueSegmet(2),
-                          -3: FatigueSegmet(3),
-                          -4: FatigueSegmet(3),
-                          -5: FatigueSegmet(2),
-                          -6: FatigueSegmet(3),
-                          -7: FatigueSegmet(3)
+        self._segments = {0: [FatigueSegment(2), FatigueSegment(3),
+                              FatigueSegment(3)],
+                          -1: [FatigueSegment(2), FatigueSegment(3),
+                               FatigueSegment(3)],
+                          -2: FatigueSegment(2),
+                          -3: FatigueSegment(3),
+                          -4: FatigueSegment(3),
+                          -5: FatigueSegment(2),
+                          -6: FatigueSegment(3),
+                          -7: FatigueSegment(3)
                           }
         self._malus = 0
         self._seg_lineaire = self._segments[0] + self._segments[-1]
@@ -410,8 +410,26 @@ class Personnage(object):
             self._seuils["+dom"] = 0
         elif enc < 14:
             self._seuils["+dom"] = 1
-        else:
+        elif enc < 16:
             self._seuils["+dom"] = 2
+        elif enc < 18:
+            self._seuils["+dom"] = 3
+        elif enc < 21:
+            self._seuils["+dom"] = 4
+        elif enc < 23:
+            self._seuils["+dom"] = 5
+        elif enc < 25:
+            self._seuils["+dom"] = 6
+        elif enc < 27:
+            self._seuils["+dom"] = 7
+        elif enc < 29:
+            self._seuils["+dom"] = 8
+        elif enc < 31:
+            self._seuils["+dom"] = 9
+        elif enc < 32:
+            self._seuils["+dom"] = 10
+        else:
+            self._seuils["+dom"] = 11
 
     def calculate_reve(self, _=None):
         """ (re)calculate reve et seuil
