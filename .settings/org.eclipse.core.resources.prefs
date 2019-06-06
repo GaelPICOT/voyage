@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/crea_perso.py=utf-8
 encoding//src/launch.py=utf-8
 encoding//src/model/observer.py=utf-8
 encoding//src/model/rules/rdd/Alchimie.py=utf-8
