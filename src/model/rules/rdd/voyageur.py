@@ -240,13 +240,67 @@ class SignesParticuliers(object):
         self._autres = ""
 
     @property
-    def nom(self):
+    def autres(self):
+        return self._autres
+
+    @autres.setter
+    def autres(self, autres):
+        if self._mode_crea:
+            self._autres = autres
+
+    @property
+    def beaute(self):
+        return self._beaute
+
+    @beaute.setter
+    def beaute(self, beaute):
+        if self._mode_crea:
+            self._beaute = beaute
+
+    @property
+    def age_debut(self):
+        return self._age_debut
+
+    @age_debut.setter
+    def age_debut(self, age_debut):
+        if self._mode_crea:
+            self._age_debut = age_debut
+
+    @property
+    def taille(self):
+        return self._taille
+
+    @taille.setter
+    def taille(self, taille):
+        if self._mode_crea:
+            self._taille = taille
+
+    @property
+    def poids(self):
         return self._nom
 
-    @nom.setter
-    def nom(self, nom):
+    @poids.setter
+    def poids(self, poids):
         if self._mode_crea:
-            self._nom = nom
+            self._poids = poids
+
+    @property
+    def cheveux(self):
+        return self._cheveux
+
+    @cheveux.setter
+    def cheveux(self, cheveux):
+        if self._mode_crea:
+            self._cheveux = cheveux
+
+    @property
+    def yeux(self):
+        return self._yeux
+
+    @yeux.setter
+    def yeux(self, yeux):
+        if self._mode_crea:
+            self._yeux = yeux
 
     @property
     def sexe(self):
@@ -259,7 +313,7 @@ class SignesParticuliers(object):
 
     @property
     def HN(self):
-        return self._nom
+        return self._HN
 
     @HN.setter
     def HN(self, HN):
