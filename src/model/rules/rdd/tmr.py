@@ -34,7 +34,10 @@ class CaseTMR(object):
         lac = 12
         marais = 13
 
-    def __init__(self, coord_x, coord_y: int, categorie, nom: str):
+        def __str__(self):
+            return self.name
+
+    def __init__(self, coord_x, coord_y: int, categorie: Categorie, nom: str):
         """ init
         """
         if type(coord_x) is not int:
@@ -43,13 +46,19 @@ class CaseTMR(object):
         self._coord_y = coord_y
         self._categorie = categorie
         self._nom = nom
+        # liste des bonus sort en réserve par voie au format [sort, paramétre]
         self._reserve = {"Oniros": [], "Hypnos": [], "Narcos": [], "Thanatos": []}
+        # liste des bonus de case au format [sort, bonus]
+        self._bonus = []
 
     @property
     def nom(self) -> str:
         """ retourne le noù
         """
         return self._nom
+
+    def __str__(self):
+        return str(self._categorie) + " " + self.nom
 
 
 default_TMR = (("A", 1, CaseTMR.Categorie.cite, "VIDE"),
@@ -246,3 +255,12 @@ default_TMR = (("A", 1, CaseTMR.Categorie.cite, "VIDE"),
 class TMR(object):
     """ Represente les TMR pour une personne
     """
+
+    def __init__(self):
+        self._cases = {(case[0], case[1]): CaseTMR(*case)
+                       for case in default_TMR}
+        self._demi_reve = ['A', 1]
+
+    @property
+    def demi_reve(self):
+        return self._cases[(self._demi_reve[0], self._demi_reve[1])]
