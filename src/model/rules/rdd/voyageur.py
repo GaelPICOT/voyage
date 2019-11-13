@@ -224,9 +224,10 @@ class Cheveux(object):
 class SignesParticuliers(object):
     """ regroupe tous les signe particuliers
     """
-    def __init__(self):
+    def __init__(self, mode_crea=True):
         """ init
         """
+        self._mode_crea = mode_crea
         self._nom = ""
         self._sexe = "Femme"  # peut être multiple en fonction de la race
         self._HN = heures.vaisseau  # heure de naissance
@@ -244,7 +245,26 @@ class SignesParticuliers(object):
 
     @nom.setter
     def nom(self, nom):
-        self._nom = nom
+        if self._mode_crea:
+            self._nom = nom
+
+    @property
+    def sexe(self):
+        return self._sexe
+
+    @sexe.setter
+    def sexe(self, sexe):
+        if self._mode_crea:
+            self._sexe = sexe
+
+    @property
+    def HN(self):
+        return self._nom
+
+    @HN.setter
+    def HN(self, HN):
+        if self._mode_crea:
+            self._HN = HN
 
 
 class Compteur(object):
