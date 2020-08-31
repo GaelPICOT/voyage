@@ -46,10 +46,11 @@ class DateTime(object):
     """ moment precis
     """
     def __init__(self, moi=heures.vaisseau, heure=heures.vaisseau, minutes=0,
-                 annee=1000):
+                 jour=1, annee=1000):
         """ init
         """
-        self._moi = moi
+        self._moi = moi  # correspond aux heurs
+        self._jour = jour  # de 1 à 28
         self._heure = heure
         self._minutes = minutes
         self._annee = annee  # année depuits début 3ième age
@@ -76,6 +77,7 @@ class DateTime(object):
         """
         timestamp = (self._heure.value-1) * ureg.heure
         timestamp += self._minutes * ureg.minute
+        timestamp += self._jour * ureg.day
         timestamp += (self._moi.value-1) * ureg.moi
         timestamp += self._annee * ureg.annee
         return timestamp.to("minute").m
@@ -91,6 +93,9 @@ class DateTime(object):
         self._moi = heures_ordonee[math.floor(tq.to('moi').m)]
         tqm = (self._moi.value-1) * ureg.moi
         tq -= tqm
+        self._jour = math.floor(tq.to('day').m)
+        tqj = self._jour * ureg.day
+        tq -= tqj
         self._heure = heures_ordonee[math.floor(tq.to('heure').m)]
         tqh = (self._heure.value-1) * ureg.heure
         tq -= tqh
