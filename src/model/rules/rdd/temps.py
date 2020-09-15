@@ -96,6 +96,8 @@ class DateTime(object):
         self._jour = math.floor(tq.to('day').m)
         tqj = self._jour * ureg.day
         tq -= tqj
+        print(tq)
+        print(math.floor(tq.to('heure').m))
         self._heure = heures_ordonee[math.floor(tq.to('heure').m)]
         tqh = (self._heure.value-1) * ureg.heure
         tq -= tqh
@@ -124,6 +126,12 @@ class DateTime(object):
         """ année en cours
         """
         return self._annee
+
+    @property
+    def jour(self):
+        """ jour en cours
+        """
+        return self._jour
 
     def __iadd__(self, duree):
         """ += with quantity
